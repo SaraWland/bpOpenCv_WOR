@@ -1,12 +1,9 @@
-#include <opencv2/highgui/highgui.hpp>
-#include <opencv2/imgproc/imgproc.hpp>
 #include <iostream>
+
+#include "openCvHandler.hpp"
 
 using namespace cv;
 using namespace std;
-
-Mat originalImage;
-Mat outputImage;
 
 int main([[maybe_unused]] int argc, [[maybe_unused]] char** argv)
 {
@@ -16,17 +13,22 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char** argv)
         return -1;
     }
 
-    VideoCapture cap(0);
-    namedWindow("outputWindow");
-    while(true) {
-        cap >> originalImage;
-        if (originalImage.empty()) break;
-        
-        outputImage = originalImage.clone();
-        imshow("outputWindow", outputImage);
-        if(waitKey(30) >= 0) break;
+    if (string(argv[1]) == "-i")
+    {
+        // Interactive mode
+    } else if (string(argv[1]) == "-b")
+    {
+        // Batch mode
+    } else {
+        cout << "Program argument not recognized. Please launch the program in one of the following modes:\nMode        | Program argument\n------------|------------------------\nInteractive | sudo ./bpOpenCV -i\nBatch       | sudo ./bpOpenCV -b" << endl;
+        return -1;
     }
-    cap.release();
-    destroyWindow("outputWindow");
+
+    OpenCvHandler handler(string(argv[1]) == "-i");
+    while(true) 
+    {
+        handler.updateImage();
+    }
+
     return 0;
 }

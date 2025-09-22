@@ -7,5 +7,5 @@ set(CMAKE_VERBOSE_MAKEFILE ON)
 
 find_package( OpenCV REQUIRED )
 include_directories( ${OpenCV_INCLUDE_DIRS} )
-add_executable( bpOpenCV main.cpp )
+add_executable( bpOpenCV main.cpp openCvHandler.cpp)
 target_link_libraries( bpOpenCV ${OpenCV_LIBS} )
