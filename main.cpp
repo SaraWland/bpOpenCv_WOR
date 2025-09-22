@@ -8,8 +8,13 @@ using namespace std;
 Mat originalImage;
 Mat outputImage;
 
-int main([[maybe_unused]] int arc, [[maybe_unused]] char** argv)
+int main([[maybe_unused]] int argc, [[maybe_unused]] char** argv)
 {
+    if (argc < 2)
+    {
+        cout << "Program arguments not found. Please launch the program in one of the following modes:\nMode        | Program argument\n------------|------------------------\nInteractive | sudo ./bpOpenCV -i\nBatch       | sudo ./bpOpenCV -b" << endl;
+        return -1;
+    }
 
     VideoCapture cap(0);
     namedWindow("outputWindow");
