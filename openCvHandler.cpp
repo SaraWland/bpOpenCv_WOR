@@ -20,7 +20,6 @@ OpenCvHandler::~OpenCvHandler()
 
 void OpenCvHandler::updateImage()
 {
-    // outputImage = originalImage.clone();
     cap >> originalImage;
     if (originalImage.empty()) { return; }
 
