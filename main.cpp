@@ -22,6 +22,11 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char** argv)
     }
 
     OpenCvHandler handler(std::string(argv[1]) == "-i");
+    //stops program if no camera found
+    if (!handler.getCaptureAvailable()) {
+        exit(-1);
+    }
+
     while(true) 
     {
         handler.updateImage();

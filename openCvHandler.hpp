@@ -10,11 +10,14 @@ public:
     ~OpenCvHandler();
 
     void updateImage();
+
+    bool getCaptureAvailable() const { return captureAvailable; }
 private:
     cv::Mat originalImage;
     cv::Mat outputImage;
     cv::VideoCapture cap;
     bool isInteractiveMode;
+    bool captureAvailable;
 };
 
 #endif
