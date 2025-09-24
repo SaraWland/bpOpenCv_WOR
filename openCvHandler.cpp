@@ -22,8 +22,13 @@ OpenCvHandler::~OpenCvHandler()
 
 void OpenCvHandler::updateImage()
 {
+
+
     cap >> originalImage;
     if (originalImage.empty()) { return; }
+
+    // TODO check for input and handle input
+
 
     cv::imshow("outputWindow", originalImage);
     cv::waitKey(30);
