@@ -5,8 +5,8 @@ Triangle::Triangle()
     this->type = ShapeType::TRIANGLE;
 }
 
-void Triangle::findShape(Color color)
+void Triangle::findShape(cv::Mat& inputImage)
 {
-    // TODO implement
+    // TODO implement triangle detection using inputImage
 
 }

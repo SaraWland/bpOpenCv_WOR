@@ -5,7 +5,7 @@ Rectangle::Rectangle()
     this->type = ShapeType::RECTANGLE;
 }
 
-void Rectangle::findShape(Color color)
+void Rectangle::findShape(cv::Mat& inputImage)
 {
-    // TODO implement
+    // TODO implement rectangle detection using inputImage
 }

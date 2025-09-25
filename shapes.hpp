@@ -1,6 +1,9 @@
 #ifndef SHAPES_HPP
 #define SHAPES_HPP
 
+#include <opencv2/highgui/highgui.hpp>
+#include <opencv2/imgproc/imgproc.hpp>
+
 #include "enums.hpp"
 
 
@@ -9,7 +12,7 @@ public:
     Shape() = default;
     virtual ~Shape() = default;
 
-    virtual void findShape(Color color) = 0;
+    virtual void findShape(cv::Mat& inputImage) = 0;
 
     ShapeType getType() const { return type; }
 protected:

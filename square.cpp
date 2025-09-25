@@ -5,7 +5,7 @@ Square::Square()
     this->type = ShapeType::SQUARE;
 }
 
-void Square::findShape(Color color)
+void Square::findShape(cv::Mat& inputImage)
 {
-    // TODO implement
+    // TODO implement square detection using inputImage
 }

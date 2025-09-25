@@ -5,7 +5,7 @@ HalfCircle::HalfCircle()
     this->type = ShapeType::HALF_CIRCLE;
 }
 
-void HalfCircle::findShape(Color color)
+void HalfCircle::findShape(cv::Mat& inputImage)
 {
-    // TODO implement
+    // TODO implement half-circle detection using inputImage
 }

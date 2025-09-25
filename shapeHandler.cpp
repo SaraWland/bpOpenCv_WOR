@@ -14,3 +14,13 @@ ShapeHandler::ShapeHandler()
     shapes.push_back(std::make_unique<Square>());
     shapes.push_back(std::make_unique<HalfCircle>());
 }
+
+ShapeHandler::~ShapeHandler()
+{
+    shapes.clear();
+}
+
+cv::Mat ShapeHandler::processShapes(const cv::Mat& inputImage)
+{
+    
+}

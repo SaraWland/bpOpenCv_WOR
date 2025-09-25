@@ -5,7 +5,7 @@ Circle::Circle()
     this->type = ShapeType::CIRCLE;
 }
 
-void Circle::findShape(Color color)
+void Circle::findShape(cv::Mat& inputImage)
 {
-    // TODO implement
+    // TODO implement circle detection using inputImage
 }
