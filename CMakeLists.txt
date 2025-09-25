@@ -12,5 +12,8 @@ add_executable( bpOpenCV main.cpp
                 circle.cpp 
                 halfCircle.cpp
                 triangle.cpp
-                rectangle.cpp)
+                rectangle.cpp
+                square.cpp
+                shapeHandler.cpp
+                colorManager.cpp)
 target_link_libraries( bpOpenCV ${OpenCV_LIBS} )

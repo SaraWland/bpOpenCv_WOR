@@ -4,6 +4,7 @@
 #include "triangle.hpp"
 #include "square.hpp"
 #include "halfCircle.hpp"
+#include "colorManager.hpp"
 
 ShapeHandler::ShapeHandler()
 {
@@ -20,7 +21,7 @@ ShapeHandler::~ShapeHandler()
     shapes.clear();
 }
 
-cv::Mat ShapeHandler::processShapes(const cv::Mat& inputImage)
+cv::Mat ShapeHandler::processShape(const cv::Mat& inputImage, ShapeType shapeType)
 {
     
 }

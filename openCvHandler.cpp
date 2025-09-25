@@ -1,5 +1,9 @@
-#include "openCvHandler.hpp"
 #include <iostream>
+
+#include "openCvHandler.hpp"
+#include "shapeHandler.hpp"
+#include "Logger.hpp"
+
 
 OpenCvHandler::OpenCvHandler(bool interactiveMode)
     : cap(0), isInteractiveMode(interactiveMode), captureAvailable(true)
