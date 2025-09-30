@@ -6,14 +6,16 @@ enum class ShapeType {
     RECTANGLE,
     TRIANGLE,
     SQUARE,
-    HALF_CIRCLE
+    HALF_CIRCLE,
+    UNKNOWN
 };
 
 enum class Color {
     PINK,
     GREEN,
     YELLOW,
-    ORANGE
+    ORANGE,
+    UNKNOWN
 };
 
 #endif

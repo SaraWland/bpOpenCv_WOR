@@ -1,0 +1,65 @@
+#include <string>
+#include <sstream>
+#include <vector>
+#include <utility>
+#include "parser.hpp"
+
+std::pair<ShapeType, Color> Parser::parseInput(const std::string& input)
+{
+    std::vector<std::string> tokens;
+    std::string currentToken;
+
+    for (char character : input) {
+        if (character == ' ') {
+            if (!currentToken.empty()) {
+                tokens.push_back(currentToken);
+                currentToken.clear();
+            } else {
+                continue; 
+            }
+        } else {
+            currentToken += character;
+        }
+    }
+    if (!currentToken.empty()) {
+        tokens.push_back(currentToken);
+    }
+
+    ShapeType shape = ShapeType::UNKNOWN;
+    Color color = Color::UNKNOWN;
+
+    if (tokens.size() == 3) {
+        std::vector<std::string> tempTokens;
+        tempTokens.push_back(tokens[0] + " " + tokens[1]);
+        tempTokens.push_back(tokens[2]);
+        tokens = tempTokens;
+    }
+
+    if (tokens[0].compare("cirkel") == 0) {
+        shape = ShapeType::CIRCLE;
+    } else if (tokens[0].compare("rechthoek") == 0) {
+        shape = ShapeType::RECTANGLE;
+    } else if (tokens[0].compare("driehoek") == 0) {
+        shape = ShapeType::TRIANGLE;
+    } else if (tokens[0].compare("vierkant") == 0) {
+        shape = ShapeType::SQUARE;
+    } else if (tokens[0].compare("halve cirkel") == 0) {
+        shape = ShapeType::HALF_CIRCLE;
+    } else {
+        shape = ShapeType::UNKNOWN;
+    }    
+
+    if (tokens[1].compare("roze") == 0) {
+        color = Color::PINK;
+    } else if (tokens[1].compare("groen") == 0) {
+        color = Color::GREEN;
+    } else if (tokens[1].compare("geel") == 0) {
+        color = Color::YELLOW;
+    } else if (tokens[1].compare("oranje") == 0) {
+        color = Color::ORANGE;
+    } else {
+        color = Color::UNKNOWN;
+    }
+
+    return {shape, color};
+}

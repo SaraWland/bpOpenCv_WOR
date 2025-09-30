@@ -4,6 +4,8 @@
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
 
+#include "inputHandler.hpp"
+
 class OpenCvHandler {
 public:
     explicit OpenCvHandler(bool interactiveMode);//TODO done because only bool in constructor. if changed changed back from explicit
@@ -18,6 +20,7 @@ private:
     cv::VideoCapture cap;
     bool isInteractiveMode;
     bool captureAvailable;
+    InputHandler inputHandler;
 };
 
 #endif
