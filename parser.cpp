@@ -28,12 +28,14 @@ std::pair<ShapeType, Color> Parser::parseInput(const std::string& input)
     ShapeType shape = ShapeType::UNKNOWN;
     Color color = Color::UNKNOWN;
 
-    if (tokens.size() == 3) {
+    if (tokens.size() < 2 || tokens.size() > 3) {
+        return {ShapeType::UNKNOWN, Color::UNKNOWN};
+    } else if (tokens.size() == 3) {
         std::vector<std::string> tempTokens;
         tempTokens.push_back(tokens[0] + " " + tokens[1]);
         tempTokens.push_back(tokens[2]);
         tokens = tempTokens;
-    }
+    } 
 
     if (tokens[0].compare("cirkel") == 0) {
         shape = ShapeType::CIRCLE;

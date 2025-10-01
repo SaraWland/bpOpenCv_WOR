@@ -3,6 +3,8 @@
 
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
+#include <thread>
+#include <atomic>
 
 #include "inputHandler.hpp"
 
@@ -13,6 +15,8 @@ public:
 
     void updateImage();
 
+    void setupInputThread();
+
     bool getCaptureAvailable() const { return captureAvailable; }
 private:
     cv::Mat originalImage;
@@ -21,6 +25,10 @@ private:
     bool isInteractiveMode;
     bool captureAvailable;
     InputHandler inputHandler;
+
+    std::thread inputThread;
+    std::atomic<bool> shouldStop;
+
 };
 
 #endif

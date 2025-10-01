@@ -8,7 +8,7 @@ Logger& Logger::getInstance() {
 }
 
 void Logger::log(const std::string& message) {    
-    std::cout << message << std::endl;
+    std::cout << message;
 }
 
 

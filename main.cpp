@@ -1,12 +1,21 @@
 #include <iostream>
 
 #include "openCvHandler.hpp"
+#include "Logger.hpp"
 
 int main([[maybe_unused]] int argc, [[maybe_unused]] char** argv)
 {
     if (argc < 2)
     {
-        std::cout << "Program arguments not found. Please launch the program in one of the following modes:\nMode        | Program argument\n------------|------------------------\nInteractive | sudo ./bpOpenCV -i\nBatch       | sudo ./bpOpenCV -b" << std::endl;
+        Logger::getInstance().log(
+            "\nProgram arguments not found. Please launch the program in one of the following modes:\n\n"
+            "------------------------------------\n"
+            "| Mode        | Program argument   |\n"
+            "|-------------|--------------------|\n"
+            "| Interactive | sudo ./bpOpenCV -i |\n"
+            "| Batch       | sudo ./bpOpenCV -b |\n"
+            "------------------------------------\n\n"
+        );
         return -1;
     }
 
@@ -17,7 +26,15 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char** argv)
     {
         // Batch mode
     } else {
-        std::cout << "Program argument not recognized. Please launch the program in one of the following modes:\nMode        | Program argument\n------------|------------------------\nInteractive | sudo ./bpOpenCV -i\nBatch       | sudo ./bpOpenCV -b" << std::endl;
+        Logger::getInstance().log(
+            "\nProgram argument not recognized. Please launch the program in one of the following modes:\n\n"
+            "------------------------------------\n"
+            "| Mode        | Program argument   |\n"
+            "|-------------|--------------------|\n"
+            "| Interactive | sudo ./bpOpenCV -i |\n"
+            "| Batch       | sudo ./bpOpenCV -b |\n"
+            "------------------------------------\n\n"
+        );
         return -1;
     }
 
