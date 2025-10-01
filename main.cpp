@@ -25,7 +25,8 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char** argv)
     } else if (std::string(argv[1]) == "-b")
     {
         // Batch mode
-    } else {
+    } else 
+    {
         Logger::getInstance().log(
             "\nProgram argument not recognized. Please launch the program in one of the following modes:\n\n"
             "------------------------------------\n"
@@ -46,7 +47,14 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char** argv)
 
     while(true) 
     {
-        handler.updateImage();
+        if (std::string(argv[1]) == "-i")
+        {
+            handler.updateImage();
+            
+            if (handler.shouldExit()) {
+                break; 
+            }
+        }
     }
 
     return 0;

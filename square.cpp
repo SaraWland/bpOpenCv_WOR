@@ -5,7 +5,9 @@ Square::Square()
     this->type = ShapeType::SQUARE;
 }
 
-void Square::findShape(cv::Mat& inputImage)
+cv::Mat Square::findShape(cv::Mat& inputImage)
 {
     // TODO implement square detection using inputImage
+    std::cout << "Square detection not yet implemented." << std::endl;
+    return inputImage;
 }

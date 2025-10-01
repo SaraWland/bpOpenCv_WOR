@@ -8,7 +8,7 @@ public:
     InputHandler();
     ~InputHandler() = default;
 
-    void checkForInput();
+    std::pair<ShapeType, Color> checkForInput();
 private:
     Parser parser;
 

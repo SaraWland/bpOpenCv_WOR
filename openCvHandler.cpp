@@ -1,12 +1,11 @@
 #include <iostream>
 
 #include "openCvHandler.hpp"
-#include "shapeHandler.hpp"
 #include "Logger.hpp"
 
 
 OpenCvHandler::OpenCvHandler(bool interactiveMode)
-    : cap(0), isInteractiveMode(interactiveMode), captureAvailable(true), inputHandler(InputHandler()), shouldStop(false)
+    : cap(0), isInteractiveMode(interactiveMode), captureAvailable(true), inputHandler(InputHandler()), shapeHandler(ShapeHandler()), colorManager(ColorManager()), shouldStop(false)
 {
     if (!cap.isOpened()) {
         captureAvailable = false;
@@ -22,25 +21,32 @@ OpenCvHandler::OpenCvHandler(bool interactiveMode)
         return;
     }
 
-    cv::namedWindow("outputWindow");
     if (isInteractiveMode) {
+        cv::namedWindow("outputWindow");
+        cv::moveWindow("outputWindow", 100, 100);
+        cv::namedWindow("resultWindow");
+        cv::moveWindow("resultWindow", 100, 800);
+
         setupInputThread();
+    
+        Logger::getInstance().log(
+            "\nWelcome to the interactive mode of the program. You can now provide input via the terminal.\n"
+            "Please provide input in the following format: <shape> <color> "
+            "(e.g. 'cirkel roze' or 'halve cirkel groen')\n\n"
+            "-------------------------------\n"
+            "| Shape types: | Colors:      |\n"
+            "|--------------|--------------|\n"
+            "| cirkel       | roze         |\n"
+            "| rechthoek    | groen        |\n"
+            "| driehoek     | geel         |\n"
+            "| vierkant     | oranje       |\n"
+            "| halve cirkel |              |\n"
+            "-------------------------------\n\n"
+        );
+        cap >> outputImage;
+        updateImage();
     }
-    Logger::getInstance().log(
-        "\nWelcome to the interactive mode of the program. You can now provide input via the terminal.\n"
-        "Please provide input in the following format: <shape> <color> "
-        "(e.g. 'cirkel roze' or 'halve cirkel groen')\n\n"
-        "-------------------------------\n"
-        "| Shape types: | Colors:      |\n"
-        "|--------------|--------------|\n"
-        "| cirkel       | roze         |\n"
-        "| rechthoek    | groen        |\n"
-        "| driehoek     | geel         |\n"
-        "| vierkant     | oranje       |\n"
-        "| halve cirkel |              |\n"
-        "-------------------------------\n\n"
-    );
-    updateImage();
+
 }
 
 OpenCvHandler::~OpenCvHandler()
@@ -61,13 +67,44 @@ void OpenCvHandler::updateImage()
     if (originalImage.empty()) { return; }
 
     cv::imshow("outputWindow", originalImage);
+    cv::imshow("resultWindow", outputImage);
     cv::waitKey(30);
+
+
 }
 
 void OpenCvHandler::setupInputThread() {
     inputThread = std::thread([this]() {
         while (!shouldStop) {
-            inputHandler.checkForInput();
-        }
+
+            std::pair<ShapeType, Color> parsedInput = inputHandler.checkForInput();
+
+            if (parsedInput.first == ShapeType::EXIT) {
+                shouldStop = true;  
+                break;             
+            }
+
+            if (parsedInput.first == ShapeType::UNKNOWN || parsedInput.second == Color::UNKNOWN) {
+                continue;
+            }
+
+            // Process valid input
+            Logger::getInstance().log("Processing input...");
+            // TODO: Add image processing
+
+            cv::Mat colorMask = colorManager.getMask(originalImage, parsedInput.second);
+            cv::Mat processedImage = shapeHandler.detectShape(colorMask, parsedInput.first);
+
+            // Convert mask to color image for overlay
+            cv::Mat colorProcessed;
+            cv::cvtColor(colorMask, colorProcessed, cv::COLOR_GRAY2BGR);
+            
+            // Blend with original image to show color mask overlay
+            cv::Mat result;
+            cv::addWeighted(originalImage, 0.7, colorProcessed, 0.3, 0, result);
+
+            outputImage = result;
+
+        } // No sleep because always waiting for input
     });
 }

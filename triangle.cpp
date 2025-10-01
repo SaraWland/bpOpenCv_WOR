@@ -5,8 +5,9 @@ Triangle::Triangle()
     this->type = ShapeType::TRIANGLE;
 }
 
-void Triangle::findShape(cv::Mat& inputImage)
+cv::Mat Triangle::findShape(cv::Mat& inputImage)
 {
     // TODO implement triangle detection using inputImage
-
+    std::cout << "Triangle detection not yet implemented." << std::endl;
+    return inputImage;
 }

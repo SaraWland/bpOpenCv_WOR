@@ -21,7 +21,28 @@ ShapeHandler::~ShapeHandler()
     shapes.clear();
 }
 
-cv::Mat ShapeHandler::processShape(const cv::Mat& inputImage, ShapeType shapeType)
+cv::Mat ShapeHandler::detectShape(cv::Mat& colorMask, ShapeType shapeType)
 {
-    
+    cv::Mat processedImage;
+    switch (shapeType)
+    {
+    case ShapeType::CIRCLE:
+        processedImage = shapes.at(0)->findShape(colorMask);
+        break;
+    case ShapeType::RECTANGLE:
+        processedImage = shapes.at(1)->findShape(colorMask);
+        break;
+    case ShapeType::TRIANGLE:
+        processedImage = shapes.at(2)->findShape(colorMask);
+        break;
+    case ShapeType::SQUARE:
+        processedImage = shapes.at(3)->findShape(colorMask);
+        break;
+    case ShapeType::HALF_CIRCLE:
+        processedImage = shapes.at(4)->findShape(colorMask);
+        break;
+    default:
+        break;
+    }
+    return processedImage;
 }

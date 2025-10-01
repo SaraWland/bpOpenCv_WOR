@@ -4,6 +4,8 @@
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
 
+#include <iostream>
+
 #include "enums.hpp"
 
 
@@ -12,7 +14,7 @@ public:
     Shape() = default;
     virtual ~Shape() = default;
 
-    virtual void findShape(cv::Mat& inputImage) = 0;
+    virtual cv::Mat findShape(cv::Mat& inputImage) = 0;
 
     ShapeType getType() const { return type; }
 protected:

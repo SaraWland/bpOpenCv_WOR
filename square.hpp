@@ -9,7 +9,7 @@ public:
     Square();
     ~Square() = default;
 
-    void findShape(cv::Mat& inputImage) override; //TODO change return type
+    cv::Mat findShape(cv::Mat& inputImage) override;
 
 private:
 

@@ -7,7 +7,8 @@ enum class ShapeType {
     TRIANGLE,
     SQUARE,
     HALF_CIRCLE,
-    UNKNOWN
+    UNKNOWN,
+    EXIT
 };
 
 enum class Color {

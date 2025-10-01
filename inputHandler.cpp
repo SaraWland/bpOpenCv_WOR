@@ -10,13 +10,18 @@ InputHandler::InputHandler()
     parser = Parser();
 }
 
-void InputHandler::checkForInput() 
+std::pair<ShapeType, Color> InputHandler::checkForInput() 
 {
     std::string userInput;
     Logger::getInstance().log("\nPlease provide input:\n > ");
     std::getline(std::cin, userInput);
 
     std::pair<ShapeType, Color> parsedData = parser.parseInput(userInput);
+
+    if (parsedData.first == ShapeType::EXIT) {
+        Logger::getInstance().log("\nExiting program...\n\n");
+        return {ShapeType::EXIT, Color::UNKNOWN};
+    }
 
     if (!validateInput(parsedData)) 
     {
@@ -33,12 +38,14 @@ void InputHandler::checkForInput()
             "| halve cirkel |              |\n"
             "-------------------------------\n\n"
         );
-        
-        return;
+
+        return {ShapeType::UNKNOWN, Color::UNKNOWN};
     }
 
-    // TODO handle input
+    
     Logger::getInstance().log("\nValid input received.\n");
+    return parsedData;
+
 }
 
 bool InputHandler::validateInput(std::pair<ShapeType, Color> input) 
