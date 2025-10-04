@@ -23,9 +23,11 @@ OpenCvHandler::OpenCvHandler(bool interactiveMode)
 
     if (isInteractiveMode) {
         cv::namedWindow("outputWindow");
-        cv::moveWindow("outputWindow", 100, 100);
+        cv::moveWindow("outputWindow", 100, 0);
+        cv::namedWindow("processedWindow");
+        cv::moveWindow("processedWindow", 100, 675);
         cv::namedWindow("resultWindow");
-        cv::moveWindow("resultWindow", 100, 800);
+        cv::moveWindow("resultWindow", 100, 1300);
 
         setupInputThread();
     
@@ -43,6 +45,7 @@ OpenCvHandler::OpenCvHandler(bool interactiveMode)
             "| halve cirkel |              |\n"
             "-------------------------------\n\n"
         );
+        cap >> filterImage;
         cap >> outputImage;
         updateImage();
     }
@@ -67,6 +70,7 @@ void OpenCvHandler::updateImage()
     if (originalImage.empty()) { return; }
 
     cv::imshow("outputWindow", originalImage);
+    cv::imshow("processedWindow", filterImage);
     cv::imshow("resultWindow", outputImage);
     cv::waitKey(30);
 
@@ -90,20 +94,14 @@ void OpenCvHandler::setupInputThread() {
 
             // Process valid input
             Logger::getInstance().log("Processing input...");
-            // TODO: Add image processing
 
             cv::Mat colorMask = colorManager.getMask(originalImage, parsedInput.second);
-            cv::Mat processedImage = shapeHandler.detectShape(colorMask, parsedInput.first);
+            cv::Mat processedImage = shapeHandler.detectShape(colorMask, parsedInput.first, originalImage);
 
-            // Convert mask to color image for overlay
-            cv::Mat colorProcessed;
-            cv::cvtColor(colorMask, colorProcessed, cv::COLOR_GRAY2BGR);
-            
-            // Blend with original image to show color mask overlay
-            cv::Mat result;
-            cv::addWeighted(originalImage, 0.7, colorProcessed, 0.3, 0, result);
+            // Show the filter image and processed image
+            filterImage = colorMask;
 
-            outputImage = result;
+            outputImage = processedImage;
 
         } // No sleep because always waiting for input
     });

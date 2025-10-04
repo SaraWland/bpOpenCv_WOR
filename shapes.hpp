@@ -14,7 +14,7 @@ public:
     Shape() = default;
     virtual ~Shape() = default;
 
-    virtual cv::Mat findShape(cv::Mat& inputImage) = 0;
+    virtual cv::Mat findShape(cv::Mat& inputImage, cv::Mat& originalImage) = 0;
 
     ShapeType getType() const { return type; }
 protected:

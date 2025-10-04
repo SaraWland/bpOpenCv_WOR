@@ -29,6 +29,7 @@ public:
     bool shouldExit() const { return shouldStop; }
 private:
     cv::Mat originalImage;
+    cv::Mat filterImage;
     cv::Mat outputImage;
     cv::VideoCapture cap;
     bool isInteractiveMode;

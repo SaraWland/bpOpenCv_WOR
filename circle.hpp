@@ -9,7 +9,7 @@ public:
     Circle();
     ~Circle() = default;
 
-    cv::Mat findShape(cv::Mat& inputImage) override;
+    cv::Mat findShape(cv::Mat& inputImage, cv::Mat& originalImage) override;
 
 private:
 
