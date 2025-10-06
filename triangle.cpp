@@ -1,6 +1,7 @@
 #include "triangle.hpp"
 #include <iostream>
 #include <vector>
+#include "Logger.hpp"
 
 Triangle::Triangle()
 {
@@ -23,11 +24,13 @@ cv::Mat Triangle::findShape(cv::Mat& inputImage, cv::Mat& originalImage, cv::Mat
     
     for (size_t i = 0; i < contours.size(); ++i)
     {
+        // Avoid big areas and small noise areas
         double area = cv::contourArea(contours[i]);
-        if (area < 100 || area > 8000) 
+        if (area < 100 || area > 15000)
+        {
             continue;
-            
-        // convert contour to polygon
+        }   
+        // Convert contour to polygon for corner checking
         std::vector<cv::Point> approx;
         double epsilon = 0.04 * cv::arcLength(contours[i], true);
         cv::approxPolyDP(contours[i], approx, epsilon, true);
@@ -35,8 +38,28 @@ cv::Mat Triangle::findShape(cv::Mat& inputImage, cv::Mat& originalImage, cv::Mat
         // Check if the polygon is a triangle
         if (approx.size() == 3)
         {
+            // Circularity check to filter out half-circles
+            // 4 * PI * area / (perimeter * perimeter)
+            double perimeter = cv::arcLength(contours[i], true);
+            double circularity = 4 * CV_PI * area / (perimeter * perimeter);
+
+            // Above a certain value the shape is too circular
+            if (circularity > 0.6) {
+                continue;
+            }
+            
+            // With finer approximation, half-circles get more vertices because it detects more details
+            std::vector<cv::Point> fineApprox;
+            double fineEpsilon = 0.015 * cv::arcLength(contours[i], true);
+            cv::approxPolyDP(contours[i], fineApprox, fineEpsilon, true);
+            
+            if (fineApprox.size() > 6) {
+                continue;
+            }
+            
             // Calculate center
             cv::Moments M = cv::moments(contours[i]);
+            // .m00 is the area of the contour
             if (M.m00 != 0) 
             {
                 cv::Point center(M.m10 / M.m00, M.m01 / M.m00);
@@ -50,8 +73,8 @@ cv::Mat Triangle::findShape(cv::Mat& inputImage, cv::Mat& originalImage, cv::Mat
                 cv::circle(contourImage, center, 3, cv::Scalar(0, 255, 0), -1);
                 
                 // Log triangle details
-                std::cout << "Triangle " << triangleCount << ": Center = (" << center.x << ", " << center.y 
-                          << "), Area = " << static_cast<int>(area) << std::endl;
+                Logger::getInstance().log("Triangle detected at (" + std::to_string(center.x) + ", " + std::to_string(center.y) + ") with area " + std::to_string(static_cast<int>(area)));
+                
                 triangleCount++;
             }
         }

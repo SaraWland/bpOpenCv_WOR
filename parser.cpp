@@ -37,6 +37,8 @@ std::pair<ShapeType, Color> Parser::parseInput(const std::string& input)
         if (tokens[0].compare("exit") == 0) 
         {
             return {ShapeType::EXIT, Color::UNKNOWN};
+        } else {
+            return {ShapeType::UNKNOWN, Color::UNKNOWN};
         }
     } else if (tokens.size() == 3) {
         std::vector<std::string> tempTokens;

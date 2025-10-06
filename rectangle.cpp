@@ -1,8 +1,8 @@
 #include "rectangle.hpp"
 #include <iostream>
-#include <vector>
 #include <cmath>
 #include <iomanip>
+#include "Logger.hpp"
 
 Rectangle::Rectangle()
 {
@@ -14,7 +14,6 @@ cv::Mat Rectangle::findShape(cv::Mat& inputImage, cv::Mat& originalImage, cv::Ma
     cv::Mat outputImage = originalImage.clone();
     cv::Mat processableImage;
     
-    // Apply Gaussian blur to reduce noise
     cv::GaussianBlur(inputImage, processableImage, cv::Size(5, 5), 1, 1);
     
     // Find contours
@@ -26,22 +25,41 @@ cv::Mat Rectangle::findShape(cv::Mat& inputImage, cv::Mat& originalImage, cv::Ma
     
     for (size_t i = 0; i < contours.size(); ++i)
     {
-        // Filter by contour area to avoid noise
+        // Avoid big areas and small noise areas
         double area = cv::contourArea(contours[i]);
-        if (area < 100 || area > 8000) 
+        if (area < 100 || area > 12000) 
         {
             continue;
         }
 
-        // convert contour to polygon
+        // convert contour to polygon for corner checking
         std::vector<cv::Point> approx;
         double epsilon = 0.04 * cv::arcLength(contours[i], true);
         cv::approxPolyDP(contours[i], approx, epsilon, true);
-        
-        // Check if the polygon is a rectangle (4 vertices)
+                
+        // Check if the polygon is a rectangle
         if (approx.size() == 4)
-        {
-            // Check if it's a rectangle but NOT a square by comparing side lengths
+        {            
+            // Circularity check to filter out half-circles
+            // 4 * PI * area / (perimeter * perimeter)
+            double perimeter = cv::arcLength(contours[i], true);
+            double circularity = 4 * CV_PI * area / (perimeter * perimeter);
+
+            // Above a certain value the shape is too circular
+            if (circularity > 0.75) {
+                continue; 
+            }
+            
+            // With finer approximation, half-circles get more vertices because it detects more details
+            std::vector<cv::Point> fineApprox;
+            double fineEpsilon = 0.01 * cv::arcLength(contours[i], true);
+            cv::approxPolyDP(contours[i], fineApprox, fineEpsilon, true);
+            
+            if (fineApprox.size() > 8) {
+                continue;
+            }
+                        
+            // Check if it's not a square by comparing side lengths
             std::vector<double> sideLengths;
             for (int j = 0; j < 4; j++)
             {
@@ -55,10 +73,10 @@ cv::Mat Rectangle::findShape(cv::Mat& inputImage, cv::Mat& originalImage, cv::Ma
             double minSide = *std::min_element(sideLengths.begin(), sideLengths.end());
             double maxSide = *std::max_element(sideLengths.begin(), sideLengths.end());
             double ratio = maxSide / minSide;
-            
-            if (ratio >= 1.3) // Rectangles have unequal sides, squares are excluded
+                        
+            if (ratio >= 1.2) // More lenient ratio for rectangles (was 1.3)
             {
-                // Calculate centroid
+                // Calculate center
                 cv::Moments M = cv::moments(contours[i]);
                 if (M.m00 != 0)
                 {
@@ -73,9 +91,8 @@ cv::Mat Rectangle::findShape(cv::Mat& inputImage, cv::Mat& originalImage, cv::Ma
                     cv::circle(contourImage, center, 3, cv::Scalar(0, 255, 0), -1);
                     
                     // Log rectangle details
-                    std::cout << "Rectangle " << rectangleCount << ": Center = (" << center.x << ", " << center.y 
-                              << "), Area = " << static_cast<int>(area) 
-                              << ", Side ratio = " << std::fixed << std::setprecision(2) << ratio << std::endl;
+                    Logger::getInstance().log("Rectangle detected at (" + std::to_string(center.x) + ", " + std::to_string(center.y) + ") with area " + std::to_string(static_cast<int>(area)) + ") and side ratio " + std::to_string(ratio));
+                    
                     rectangleCount++;
                 }
             }

@@ -3,6 +3,7 @@
 #include <vector>
 #include <cmath>
 #include <iomanip>
+#include "Logger.hpp"
 
 Square::Square()
 {
@@ -14,7 +15,6 @@ cv::Mat Square::findShape(cv::Mat& inputImage, cv::Mat& originalImage, cv::Mat& 
     cv::Mat outputImage = originalImage.clone();
     cv::Mat processableImage;
     
-    // Apply Gaussian blur to reduce noise
     cv::GaussianBlur(inputImage, processableImage, cv::Size(5, 5), 1, 1);
     
     // Find contours
@@ -26,21 +26,22 @@ cv::Mat Square::findShape(cv::Mat& inputImage, cv::Mat& originalImage, cv::Mat& 
     
     for (size_t i = 0; i < contours.size(); ++i)
     {
-        // Filter by contour area to avoid noise
+        // Avoid big areas and small noise areas
         double area = cv::contourArea(contours[i]);
-        if (area < 100 || area > 8000)
+        if (area < 100 || area > 15000)
         {
             continue;
         }
 
-        // convert contour to polygon
+        // convert contour to polygon for corner checking
         std::vector<cv::Point> approx;
         double epsilon = 0.04 * cv::arcLength(contours[i], true);
         cv::approxPolyDP(contours[i], approx, epsilon, true);
-        
+                
         // Check if the polygon is a square
         if (approx.size() == 4)
         {
+            
             // Check if it's approximately a square by comparing side lengths
             std::vector<double> sideLengths;
             for (int j = 0; j < 4; j++)
@@ -55,12 +56,13 @@ cv::Mat Square::findShape(cv::Mat& inputImage, cv::Mat& originalImage, cv::Mat& 
             double minSide = *std::min_element(sideLengths.begin(), sideLengths.end());
             double maxSide = *std::max_element(sideLengths.begin(), sideLengths.end());
             double ratio = maxSide / minSide;
-            
+                        
             // If ratio is close to 1, it's approximately a square
-            if (ratio < 1.3) // Tolerance. change for stricter or looser detection
+            if (ratio < 1.3)
             {
-                // Calculate centroid
+                // Calculate center
                 cv::Moments M = cv::moments(contours[i]);
+                // .m00 is the area of the contour
                 if (M.m00 != 0)
                 {
                     cv::Point center(M.m10 / M.m00, M.m01 / M.m00);
@@ -74,9 +76,8 @@ cv::Mat Square::findShape(cv::Mat& inputImage, cv::Mat& originalImage, cv::Mat& 
                     cv::circle(contourImage, center, 3, cv::Scalar(0, 255, 0), -1);
                     
                     // Log square details
-                    std::cout << "Square " << squareCount << ": Center = (" << center.x << ", " << center.y 
-                              << "), Area = " << static_cast<int>(area) 
-                              << ", Side ratio = " << std::fixed << std::setprecision(2) << ratio << std::endl;
+                    Logger::getInstance().log("Square detected at (" + std::to_string(center.x) + ", " + std::to_string(center.y) + ") with area " + std::to_string(static_cast<int>(area)) + ") and side ratio " + std::to_string(ratio));
+                    
                     squareCount++;
                 }
             }
