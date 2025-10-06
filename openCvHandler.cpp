@@ -5,7 +5,7 @@
 
 
 OpenCvHandler::OpenCvHandler(bool interactiveMode)
-    : cap(0), isInteractiveMode(interactiveMode), captureAvailable(true), inputHandler(InputHandler()), shapeHandler(ShapeHandler()), colorManager(ColorManager()), shouldStop(false)
+    : cap(4), isInteractiveMode(interactiveMode), captureAvailable(true), inputHandler(InputHandler()), shapeHandler(ShapeHandler()), colorManager(ColorManager()), shouldStop(false)
 {
     if (!cap.isOpened()) {
         captureAvailable = false;
@@ -23,11 +23,13 @@ OpenCvHandler::OpenCvHandler(bool interactiveMode)
 
     if (isInteractiveMode) {
         cv::namedWindow("outputWindow");
-        cv::moveWindow("outputWindow", 100, 0);
-        cv::namedWindow("processedWindow");
-        cv::moveWindow("processedWindow", 100, 675);
+        cv::moveWindow("outputWindow", 10, 0);
+        cv::namedWindow("processedColorWindow");
+        cv::moveWindow("processedColorWindow", 10, 675);
+        cv::namedWindow("processedShapeWindow");
+        cv::moveWindow("processedShapeWindow", 10, 1300);
         cv::namedWindow("resultWindow");
-        cv::moveWindow("resultWindow", 100, 1300);
+        cv::moveWindow("resultWindow", 1500, 0);
 
         setupInputThread();
     
@@ -47,6 +49,7 @@ OpenCvHandler::OpenCvHandler(bool interactiveMode)
         );
         cap >> filterImage;
         cap >> outputImage;
+        cap >> contourImage;
         updateImage();
     }
 
@@ -70,7 +73,8 @@ void OpenCvHandler::updateImage()
     if (originalImage.empty()) { return; }
 
     cv::imshow("outputWindow", originalImage);
-    cv::imshow("processedWindow", filterImage);
+    cv::imshow("processedColorWindow", filterImage);
+    cv::imshow("processedShapeWindow", contourImage);
     cv::imshow("resultWindow", outputImage);
     cv::waitKey(30);
 
@@ -96,11 +100,12 @@ void OpenCvHandler::setupInputThread() {
             Logger::getInstance().log("Processing input...");
 
             cv::Mat colorMask = colorManager.getMask(originalImage, parsedInput.second);
-            cv::Mat processedImage = shapeHandler.detectShape(colorMask, parsedInput.first, originalImage);
+            cv::Mat tempContourImage;
+            cv::Mat processedImage = shapeHandler.detectShape(colorMask, parsedInput.first, originalImage, tempContourImage);
 
             // Show the filter image and processed image
             filterImage = colorMask;
-
+            contourImage = tempContourImage;
             outputImage = processedImage;
 
         } // No sleep because always waiting for input

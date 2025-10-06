@@ -28,7 +28,9 @@ std::pair<ShapeType, Color> Parser::parseInput(const std::string& input)
     ShapeType shape = ShapeType::UNKNOWN;
     Color color = Color::UNKNOWN;
 
-    if (tokens.size() > 3) {
+    if (tokens.empty()) {
+        return {ShapeType::UNKNOWN, Color::UNKNOWN};
+    } else if (tokens.size() > 3) {
         return {ShapeType::UNKNOWN, Color::UNKNOWN};
     } else if (tokens.size() < 2)
     {

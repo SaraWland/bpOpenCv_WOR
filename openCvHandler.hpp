@@ -31,6 +31,7 @@ private:
     cv::Mat originalImage;
     cv::Mat filterImage;
     cv::Mat outputImage;
+    cv::Mat contourImage;
     cv::VideoCapture cap;
     bool isInteractiveMode;
     bool captureAvailable;

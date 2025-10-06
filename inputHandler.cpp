@@ -13,7 +13,7 @@ InputHandler::InputHandler()
 std::pair<ShapeType, Color> InputHandler::checkForInput() 
 {
     std::string userInput;
-    Logger::getInstance().log("\nPlease provide input:\n > ");
+    Logger::getInstance().log("\nPlease provide input:\n ~> ");
     std::getline(std::cin, userInput);
 
     std::pair<ShapeType, Color> parsedData = parser.parseInput(userInput);

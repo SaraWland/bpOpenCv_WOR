@@ -7,7 +7,7 @@ Triangle::Triangle()
     this->type = ShapeType::TRIANGLE;
 }
 
-cv::Mat Triangle::findShape(cv::Mat& inputImage, cv::Mat& originalImage)
+cv::Mat Triangle::findShape(cv::Mat& inputImage, cv::Mat& originalImage, cv::Mat& contourImage)
 {
     cv::Mat outputImage = originalImage.clone();
     cv::Mat processableImage;
@@ -23,9 +23,8 @@ cv::Mat Triangle::findShape(cv::Mat& inputImage, cv::Mat& originalImage)
     
     for (size_t i = 0; i < contours.size(); ++i)
     {
-        // Ignore too small or too large contours
         double area = cv::contourArea(contours[i]);
-        if (area < 100 || area > 5000) 
+        if (area < 100 || area > 8000) 
             continue;
             
         // convert contour to polygon
@@ -38,16 +37,23 @@ cv::Mat Triangle::findShape(cv::Mat& inputImage, cv::Mat& originalImage)
         {
             // Calculate center
             cv::Moments M = cv::moments(contours[i]);
-            cv::Point center(M.m10 / M.m00, M.m01 / M.m00);
-            
-            // Draw the triangle
-            cv::polylines(outputImage, approx, true, cv::Scalar(0, 255, 0), 2);
-            cv::circle(outputImage, center, 3, cv::Scalar(0, 0, 255), -1);
-            
-            // Log triangle details
-            std::cout << "Triangle " << triangleCount << ": Center = (" << center.x << ", " << center.y 
-                      << "), Area = " << static_cast<int>(area) << std::endl;
-            triangleCount++;
+            if (M.m00 != 0) 
+            {
+                cv::Point center(M.m10 / M.m00, M.m01 / M.m00);
+                
+                // Draw the triangle
+                cv::polylines(outputImage, approx, true, cv::Scalar(0, 255, 0), 2);
+                cv::circle(outputImage, center, 3, cv::Scalar(0, 0, 255), -1);
+                
+                // Draw contours on black background for visualization
+                cv::polylines(contourImage, approx, true, cv::Scalar(255, 255, 255), 2);
+                cv::circle(contourImage, center, 3, cv::Scalar(0, 255, 0), -1);
+                
+                // Log triangle details
+                std::cout << "Triangle " << triangleCount << ": Center = (" << center.x << ", " << center.y 
+                          << "), Area = " << static_cast<int>(area) << std::endl;
+                triangleCount++;
+            }
         }
     }
     

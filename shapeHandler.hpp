@@ -12,7 +12,7 @@ public:
     ShapeHandler();
     ~ShapeHandler();
 
-    cv::Mat detectShape(cv::Mat& inputImage, ShapeType shapeType, cv::Mat& originalImage);
+    cv::Mat detectShape(cv::Mat& inputImage, ShapeType shapeType, cv::Mat& originalImage, cv::Mat& contourImage);
 
 private:
     std::vector<std::unique_ptr<Shape>> shapes;

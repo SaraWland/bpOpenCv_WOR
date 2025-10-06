@@ -9,7 +9,7 @@ public:
     Square();
     ~Square() = default;
 
-    cv::Mat findShape(cv::Mat& inputImage, cv::Mat& originalImage) override;
+    cv::Mat findShape(cv::Mat& inputImage, cv::Mat& originalImage, cv::Mat& contourImage) override;
 
 private:
 
