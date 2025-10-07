@@ -28,11 +28,19 @@ cv::Mat ColorManager::getMask(const cv::Mat& inputImage, Color color) const
             cv::inRange(hsv, cv::Scalar(35, 25, 25), cv::Scalar(85, 255, 255), mask2);
             // Dark green range
             cv::inRange(hsv, cv::Scalar(40, 30, 30), cv::Scalar(80, 255, 180), mask3);
-            
             cv::Mat tempMask;
             cv::bitwise_or(mask1, mask2, tempMask);
             cv::bitwise_or(tempMask, mask3, mask);
             std::cout << "Green color mask created with triple range." << std::endl;
+
+            // cv::Mat bright, dark;
+            // cv::inRange(hsv, cv::Scalar(35, 25, 150), cv::Scalar(85, 255, 255), bright);
+            // cv::inRange(hsv, cv::Scalar(35, 25, 25),  cv::Scalar(85, 255, 150), dark);
+            // cv::bitwise_or(bright, dark, mask);
+
+
+            // cv::inRange(hsv, cv::Scalar(35, 25, 25), cv::Scalar(85, 255, 255), mask);
+            // std::cout << "Green color mask created with single range." << std::endl;
         }
         break;
     case Color::YELLOW:
