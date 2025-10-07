@@ -2,6 +2,7 @@
 #include <iostream>
 #include <cmath>
 #include <iomanip>
+#include <chrono>
 #include "Logger.hpp"
 
 Rectangle::Rectangle()
@@ -21,10 +22,17 @@ cv::Mat Rectangle::findShape(cv::Mat& inputImage, cv::Mat& originalImage, cv::Ma
     std::vector<cv::Vec4i> hierarchy;
     cv::findContours(processableImage, contours, hierarchy, cv::RETR_EXTERNAL, cv::CHAIN_APPROX_SIMPLE);
     
-    int rectangleCount = 0;
+    std::vector<std::vector<cv::Point>> validRectangles;
+    std::vector<long long> individualDetectionTimes; // Store individual detection times
+    
+    // Start timing for detection process
+    std::chrono::high_resolution_clock::time_point startTime = std::chrono::high_resolution_clock::now();
     
     for (size_t i = 0; i < contours.size(); ++i)
     {
+        // Start timing for individual rectangle validation
+        std::chrono::high_resolution_clock::time_point individualStartTime = std::chrono::high_resolution_clock::now();
+        
         // Avoid big areas and small noise areas
         double area = cv::contourArea(contours[i]);
         if (area < 100 || area > 12000) 
@@ -76,27 +84,109 @@ cv::Mat Rectangle::findShape(cv::Mat& inputImage, cv::Mat& originalImage, cv::Ma
                         
             if (ratio >= 1.2) // More lenient ratio for rectangles (was 1.3)
             {
-                // Calculate center
-                cv::Moments M = cv::moments(contours[i]);
-                if (M.m00 != 0)
-                {
-                    cv::Point center(M.m10 / M.m00, M.m01 / M.m00);
-                    
-                    // Draw the rectangle
-                    cv::polylines(outputImage, approx, true, cv::Scalar(0, 255, 255), 2);
-                    cv::circle(outputImage, center, 3, cv::Scalar(0, 0, 255), -1); 
-                    
-                    // Draw contours on black background for visualization
-                    cv::polylines(contourImage, approx, true, cv::Scalar(255, 255, 255), 2);
-                    cv::circle(contourImage, center, 3, cv::Scalar(0, 255, 0), -1);
-                    
-                    // Log rectangle details
-                    Logger::getInstance().log("Rectangle detected at (" + std::to_string(center.x) + ", " + std::to_string(center.y) + ") with area " + std::to_string(static_cast<int>(area)) + ") and side ratio " + std::to_string(ratio));
-                    
-                    rectangleCount++;
-                }
+                // End timing for individual rectangle validation
+                std::chrono::high_resolution_clock::time_point individualEndTime = std::chrono::high_resolution_clock::now();
+                std::chrono::duration<long long, std::nano> individualDuration = std::chrono::duration_cast<std::chrono::nanoseconds>(individualEndTime - individualStartTime);
+                
+                // Convert nanoseconds to actual clock ticks using approximate CPU frequency
+                double cpuFrequencyGHz = 4.0; // Approximate CPU frequency in GHz
+                long long individualClockTicks = static_cast<long long>(individualDuration.count() * cpuFrequencyGHz);
+                
+                validRectangles.push_back(contours[i]);
+                individualDetectionTimes.push_back(individualClockTicks);
             }
         }
+    }
+    
+    // End timing for detection process
+    std::chrono::high_resolution_clock::time_point endTime = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<long long, std::nano> duration = std::chrono::duration_cast<std::chrono::nanoseconds>(endTime - startTime);
+    
+    // Convert nanoseconds to actual clock ticks using approximate CPU frequency
+    double cpuFrequencyGHz = 4.0; // Approximate CPU frequency in GHz
+    long long totalClockTicks = static_cast<long long>(duration.count() * cpuFrequencyGHz);
+
+    // Draw detected rectangles
+    for (size_t i = 0; i < validRectangles.size(); ++i)
+    {
+        // Safety check
+        if (validRectangles[i].empty()) 
+        {
+            continue;
+        }
+        
+        // Convert contour to polygon for drawing
+        std::vector<cv::Point> approx;
+        double epsilon = 0.04 * cv::arcLength(validRectangles[i], true);
+        cv::approxPolyDP(validRectangles[i], approx, epsilon, true);
+        
+        // Calculate center and area for logging
+        cv::Moments M = cv::moments(validRectangles[i]);
+        if (M.m00 == 0) 
+        {
+            continue;
+        }
+        cv::Point center(M.m10 / M.m00, M.m01 / M.m00);
+        double area = cv::contourArea(validRectangles[i]);
+        
+        // Calculate side lengths for radius estimation
+        std::vector<double> sideLengths;
+        for (int j = 0; j < 4; j++)
+        {
+            cv::Point p1 = approx[j];
+            cv::Point p2 = approx[(j + 1) % 4];
+            double length = cv::norm(p1 - p2);
+            sideLengths.push_back(length);
+        }
+        double maxSide = *std::max_element(sideLengths.begin(), sideLengths.end());
+        double radius = maxSide / 2.0;
+        
+        // Draw the rectangle
+        cv::polylines(outputImage, approx, true, cv::Scalar(0, 255, 255), 2);
+        cv::circle(outputImage, center, 3, cv::Scalar(0, 0, 255), -1); 
+        
+        // Draw coords, area and individual clock ticks on output image
+        // make sure text is within image bounds and does not overlap with the shape
+        std::string info = "X,Y(" + std::to_string(center.x) + ", " + std::to_string(center.y) + "), A: " + std::to_string(static_cast<int>(area)) + ", T: " + std::to_string(individualDetectionTimes[i]) + " ticks";
+        
+        // Calculate text size to ensure it fits
+        int baseline = 0;
+        cv::Size textSize = cv::getTextSize(info, cv::FONT_HERSHEY_SIMPLEX, 0.4, 1, &baseline);
+        
+        // Start with default position (right and above the center)
+        cv::Point textPos(center.x + static_cast<int>(radius) + 10, center.y - 10);
+        
+        // Check if text goes beyond right edge
+        if (textPos.x + textSize.width > outputImage.cols) {
+            textPos.x = center.x - static_cast<int>(radius) - textSize.width - 10; // Move to left side
+        }
+        
+        // Check if text goes beyond left edge
+        if (textPos.x < 0) {
+            textPos.x = 10; // Move to left margin
+        }
+        
+        // Check if text goes above top edge
+        if (textPos.y - textSize.height < 0) {
+            textPos.y = center.y + static_cast<int>(radius) + textSize.height + 10; // Move below shape
+        }
+        
+        // Check if text goes below bottom edge
+        if (textPos.y > outputImage.rows) {
+            textPos.y = outputImage.rows - 10; // Move to bottom margin
+        }
+        
+        cv::putText(outputImage, info, textPos, cv::FONT_HERSHEY_SIMPLEX, 0.4, cv::Scalar(0, 0, 0), 1);
+        
+        // Draw contours on black background for visualization
+        cv::polylines(contourImage, approx, true, cv::Scalar(255, 255, 255), 2);
+        cv::circle(contourImage, center, 3, cv::Scalar(0, 255, 0), -1);
+    }
+    
+    // Always display detection timing information
+    if (validRectangles.size() == 0){
+        std::string noDetectionMsg = "Geen rechthoeken gedetecteerd - " + std::to_string(totalClockTicks) + " ticks";
+        cv::putText(outputImage, noDetectionMsg, cv::Point(10, 30), cv::FONT_HERSHEY_SIMPLEX, 0.7, cv::Scalar(0, 0, 255), 2);
     }
     
     return outputImage;
