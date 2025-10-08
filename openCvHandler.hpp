@@ -25,8 +25,11 @@ public:
     void processBatchMode();
 
     // Getters for private members
-    bool getCaptureAvailable() const { return captureAvailable; }
-    bool shouldExit() const { return shouldStop; }
+    // cppcheck-suppress unusedFunction ; Used in main.cpp for camera availability check
+    bool getCaptureAvailable() const { return captureAvailable; } 
+    
+    // cppcheck-suppress unusedFunction ; Used in main.cpp for program exit control
+    bool getShouldStop() const { return shouldStop; }
 private:
     cv::Mat originalImage;
     cv::Mat filterImage;

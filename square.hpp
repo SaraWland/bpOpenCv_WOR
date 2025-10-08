@@ -6,7 +6,7 @@
 
 class Square : public Shape {
 public:
-    Square();
+    Square() = default;
     ~Square() = default;
 
     cv::Mat findShape(cv::Mat& inputImage, cv::Mat& originalImage, cv::Mat& contourImage, bool isInteractive) override;

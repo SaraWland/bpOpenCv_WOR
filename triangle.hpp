@@ -6,7 +6,7 @@
 
 class Triangle : public Shape {
 public:
-    Triangle();
+    Triangle() = default;
     ~Triangle() = default;
 
     cv::Mat findShape(cv::Mat& inputImage, cv::Mat& originalImage, cv::Mat& contourImage, bool isInteractive) override;

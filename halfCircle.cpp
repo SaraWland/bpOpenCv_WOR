@@ -6,11 +6,7 @@
 #include <chrono>
 #include "Logger.hpp"
 
-HalfCircle::HalfCircle()
-{
-    this->type = ShapeType::HALF_CIRCLE;
-}
-
+// cppcheck-suppress unusedFunction ; Called in detectShape() in shapeHandler.cpp
 cv::Mat HalfCircle::findShape(cv::Mat& inputImage, cv::Mat& originalImage, cv::Mat& contourImage, bool isInteractive)
 {
     cv::Mat outputImage = originalImage.clone();
@@ -66,7 +62,6 @@ cv::Mat HalfCircle::findShape(cv::Mat& inputImage, cv::Mat& originalImage, cv::M
         
         // Get bounding rectangle and rotated rectangle
         cv::Rect boundingRectangle = cv::boundingRect(contours[i]);
-        cv::RotatedRect rotatedRect = cv::minAreaRect(contours[i]);
         
         // Calculate values for checking
         double aspectRatio = static_cast<double>(boundingRectangle.width) / boundingRectangle.height;
@@ -82,8 +77,6 @@ cv::Mat HalfCircle::findShape(cv::Mat& inputImage, cv::Mat& originalImage, cv::M
         {
             convexity = area / hullArea;
         }
-
-        bool isHalfCircle = false;
 
         // Get the enclosing circle. Area should be half of that. Defined with a ratio
         cv::Point2f center;
@@ -164,7 +157,6 @@ cv::Mat HalfCircle::findShape(cv::Mat& inputImage, cv::Mat& originalImage, cv::M
             }
             
             validHalfCircles.push_back(contours[i]);
-            isHalfCircle = true;
         }
     }
     

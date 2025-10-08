@@ -15,10 +15,6 @@ public:
     virtual ~Shape() = default;
 
     virtual cv::Mat findShape(cv::Mat& inputImage, cv::Mat& originalImage, cv::Mat& contourImage, bool isInteractive) = 0;
-
-    ShapeType getType() const { return type; }
-protected:
-    ShapeType type;
 };
 
 #endif

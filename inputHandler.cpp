@@ -5,11 +5,13 @@
 #include "inputHandler.hpp"
 #include "Logger.hpp"
 
-InputHandler::InputHandler()
+InputHandler::InputHandler() 
+: parser(Parser())
 {
-    parser = Parser();
 }
 
+
+// cppcheck-suppress unusedFunction ; Used in openCvHandler.cpp setupInputThread() for interactive input
 std::pair<ShapeType, Color> InputHandler::checkForInput() 
 {
     std::string userInput;
@@ -53,6 +55,7 @@ bool InputHandler::validateInput(std::pair<ShapeType, Color> input)
     return (input.first != ShapeType::UNKNOWN && input.second != Color::UNKNOWN);
 }
 
+// cppcheck-suppress unusedFunction ; Used in openCvHandler.cpp processBatchMode() for batch input
 std::vector<std::pair<ShapeType, Color>>& InputHandler::getBatchInput(const std::string& filePath)
 {
     parser.parseBatchInput(filePath, batchInputs);

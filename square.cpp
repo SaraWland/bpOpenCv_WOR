@@ -6,11 +6,7 @@
 #include <chrono>
 #include "Logger.hpp"
 
-Square::Square()
-{
-    this->type = ShapeType::SQUARE;
-}
-
+// cppcheck-suppress unusedFunction ; Called in detectShape() in shapeHandler.cpp
 cv::Mat Square::findShape(cv::Mat& inputImage, cv::Mat& originalImage, cv::Mat& contourImage, bool isInteractive)
 {
     cv::Mat outputImage = originalImage.clone();

@@ -32,7 +32,7 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char** argv)
         while (true) {
             handler.updateImage();
             
-            if (handler.shouldExit()) {
+            if (handler.getShouldStop()) {
                 break; 
             }
         }
@@ -49,7 +49,7 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char** argv)
 
         while (true) 
         {   
-            if (handler.shouldExit()) {
+            if (handler.getShouldStop()) {
                 break; 
             }
         }

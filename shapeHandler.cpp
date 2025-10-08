@@ -21,6 +21,7 @@ ShapeHandler::~ShapeHandler()
     shapes.clear();
 }
 
+// cppcheck-suppress unusedFunction ; Used in openCvHandler.cpp for shape detection
 cv::Mat ShapeHandler::detectShape(cv::Mat& colorMask, ShapeType shapeType, cv::Mat& originalImage, cv::Mat& contourImage, bool isInteractive)
 {
     contourImage = cv::Mat::zeros(originalImage.size(), CV_8UC3);

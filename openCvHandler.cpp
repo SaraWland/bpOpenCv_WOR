@@ -67,7 +67,7 @@ OpenCvHandler::~OpenCvHandler()
         inputThread.join();
     }
     cap.release();
-    if (isInteractiveMode)
+    if (isInteractiveMode && captureAvailable)
     {
         cv::destroyWindow("processedColorWindow");
         cv::destroyWindow("processedShapeWindow");

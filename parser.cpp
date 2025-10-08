@@ -79,6 +79,7 @@ std::pair<ShapeType, Color> Parser::parseInput(const std::string& input)
     return {shape, color};
 }
 
+// cppcheck-suppress unusedFunction ; Used in inputHandler.cpp getBatchInput() for batch file parsing
 void Parser::parseBatchInput(const std::string& batchFilePath, std::vector<std::pair<ShapeType, Color>>& batchInputs)
 {
     std::ifstream file(batchFilePath);
@@ -99,9 +100,9 @@ void Parser::parseBatchInput(const std::string& batchFilePath, std::vector<std::
         }
 
         // If # then ignore rest of line
-        for (size_t i = 0; i < line.size(); ++i) {
-            if (line[i] == '#') {
-                line = line.substr(0, i);
+        for (size_t j = 0; j < line.size(); ++j) {
+            if (line[j] == '#') {
+                line.resize(j);
                 break;
             }
         }

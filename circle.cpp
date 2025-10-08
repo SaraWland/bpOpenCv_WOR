@@ -4,11 +4,7 @@
 #include <chrono>
 #include "Logger.hpp"
 
-Circle::Circle()
-{
-    this->type = ShapeType::CIRCLE;
-}
-
+// cppcheck-suppress unusedFunction ; Called in detectShape() in shapeHandler.cpp
 cv::Mat Circle::findShape(cv::Mat& inputImage, cv::Mat& originalImage, cv::Mat& contourImage, bool isInteractive)
 {
     cv::Mat outputImage = originalImage.clone();

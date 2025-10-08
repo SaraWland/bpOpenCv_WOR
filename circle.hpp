@@ -6,7 +6,7 @@
 
 class Circle : public Shape {
 public:
-    Circle();
+    Circle() = default;
     ~Circle() = default;
 
     cv::Mat findShape(cv::Mat& inputImage, cv::Mat& originalImage, cv::Mat& contourImage, bool isInteractive) override;

@@ -6,7 +6,7 @@
 
 class Rectangle : public Shape {
 public:
-    Rectangle();
+    Rectangle() = default;
     ~Rectangle() = default;
 
     cv::Mat findShape(cv::Mat& inputImage, cv::Mat& originalImage, cv::Mat& contourImage, bool isInteractive) override;

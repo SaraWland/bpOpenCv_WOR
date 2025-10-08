@@ -6,7 +6,7 @@
 
 class HalfCircle : public Shape {
 public:
-    HalfCircle();
+    HalfCircle() = default;
     ~HalfCircle() = default;
 
     cv::Mat findShape(cv::Mat& inputImage, cv::Mat& originalImage, cv::Mat& contourImage, bool isInteractive) override;

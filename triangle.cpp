@@ -4,11 +4,7 @@
 #include <chrono>
 #include "Logger.hpp"
 
-Triangle::Triangle()
-{
-    this->type = ShapeType::TRIANGLE;
-}
-
+// cppcheck-suppress unusedFunction ; Called in detectShape() in shapeHandler.cpp
 cv::Mat Triangle::findShape(cv::Mat& inputImage, cv::Mat& originalImage, cv::Mat& contourImage, bool isInteractive)
 {
     cv::Mat outputImage = originalImage.clone();
