@@ -9,9 +9,19 @@ class Logger {
 public:
     Logger(const Logger&) = delete;
     Logger& operator=(const Logger&) = delete;
-
+    
+    /**
+     * @brief Get the Instance of the Logger
+     * 
+     * @return Logger& Reference to the singleton Logger instance.
+     */
     static Logger& getInstance();
 
+    /**
+    * @brief Logs a message to the standard output.
+    * 
+    * @param message The message to log.
+    */
     void log(const std::string& message);
     
 private:

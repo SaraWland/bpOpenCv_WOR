@@ -78,8 +78,6 @@ OpenCvHandler::~OpenCvHandler()
 
 void OpenCvHandler::updateImage()
 {
-
-
     cap >> originalImage;
     if (originalImage.empty()) { return; }
 
@@ -126,7 +124,6 @@ void OpenCvHandler::setupInputThread() {
 void OpenCvHandler::processBatchMode()
 {
     Logger::getInstance().log("Starting batch processing...\n");
-    // Logger::getInstance().log("Batch mode not yet implemented.\n");
 
     const std::vector<std::pair<ShapeType, Color>>& batchInputs = inputHandler.getBatchInput(batchFilePath);
 
@@ -137,19 +134,13 @@ void OpenCvHandler::processBatchMode()
             shouldStop = true;
             return;
         }
-        const std::pair<ShapeType, Color>& input = batchInputs[i];
-        // Logger::getInstance().log("Processing input " + std::to_string(i + 1) + " of " + std::to_string(batchInputs.size()) + "...\n");
-        // Logger::getInstance().log("Shape: " + std::to_string(static_cast<int>(input.first)) + ", Color: " + std::to_string(static_cast<int>(input.second)) + "\n");
-        // Implement processing logic here
 
+        const std::pair<ShapeType, Color>& input = batchInputs[i];
         cv::Mat colorMask = colorManager.getMask(originalImage, input.second);
         cv::Mat processedImage = shapeHandler.detectShape(colorMask, input.first, originalImage, contourImage, isInteractiveMode);
         // To save images write processedImage to file if needed
         // std::string outputFilePath = "output/batch_" + std::to_string(i) + ".png";
         // cv::imwrite(outputFilePath, processedImage);
-
-
-
     }
 
     shouldStop = true;

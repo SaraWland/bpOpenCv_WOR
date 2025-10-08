@@ -13,6 +13,7 @@ Er worden twee modus aangeboden:<br>
 ### Inhoud
 - [Installatie](#installatie)
 - [Gebruik](#gebruik)
+- [Overige informatie](#overige-informatie)
 
 ---------------------------------------------
 
@@ -106,3 +107,12 @@ Hier bij wordt commentaar ondersteund door een '#' te gebruiken. Alles na een '#
 Bij incorrecte input zal er een foutmelding in de terminal verschijnen over welke regel incorrect is, maar het programma zal doorgaan met de volgende regel.<br>
 
 ----------------------------------------------
+
+### Overige informatie
+
+Sommige functies worden door cppcheck als "never used" gemarkeerd, terwijl deze wel worden gebruikt. In deze situatie is de warning suppressed met commentaar over waar de functie wel gebruikt wordt.<br><br>
+Er is doxygen documentatie aanwezig in de header files van de code. Doxygen is weg gelaten bij de volgende functies, omdat deze voor zich spreken:<br>
+- Constructors en destructors
+- Getters en setters
+- Operators
+Als één van deze functies niet voor zich spreekt, is er wel doxygen documentatie aanwezig.<br><br>
