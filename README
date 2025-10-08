@@ -2,9 +2,9 @@
 #### Door: Sara Wieland
 
 Dit programma is geschreven voor het OpenCV beroepsproduct van WOR-Robots. Dit programma biedt de mogelijkheid een webcam input uit te lezen en hier verschillende kleuren figuren in te herkennen. 
-Er worden twee modus aangeboden:
-    - Interactive modus: Hierin kan de gebruiker zelf de kleur en vorm selecteren die herkend moet worden en visuele feedback krijgen over waar de figuren op de input aanwezig zijn, welke waardes ze hebben en hoelang het duurde om ze te herkennen.
-    - Batch modus: Hierin kan de gebruiker doormiddel van een input bestand meerdere herkenningen achter elkaar uitvoeren. De resultaten worden direct weergegeven in de terminal en niet gevisualiseerd.
+Er worden twee modus aangeboden:\n
+    - Interactive modus: Hierin kan de gebruiker zelf de kleur en vorm selecteren die herkend moet worden en visuele feedback krijgen over waar de figuren op de input aanwezig zijn, welke waardes ze hebben en hoelang het duurde om ze te herkennen.\n
+    - Batch modus: Hierin kan de gebruiker doormiddel van een input bestand meerdere herkenningen achter elkaar uitvoeren. De resultaten worden direct weergegeven in de terminal en niet gevisualiseerd.\n
  
 ---------------------------------------------  
 
@@ -17,49 +17,50 @@ Er worden twee modus aangeboden:
 
 ### Installatie
 
-1. Clone de repository van de GitHub pagina op een gewenste locatie:
-```
-git clone https://bitbucket.aimsites.nl/users/sj.wieland_student.han.nl/repos/bpopencv/browse
-```
+###\n1. Clone de repository van de GitHub pagina op een gewenste locatie:
+    ```
+    git clone https://bitbucket.aimsites.nl/users/sj.wieland_student.han.nl/repos/bpopencv/browse
+    ```
 In de aangeleverde docker container is OpenCV al geïnstalleerd. Indien je het programma lokaal wilt draaien, installeer dan eerst OpenCV op je systeem.
 
-2. Navigeer naar de map waar je de repository hebt gecloned:
-```
-cd bpopencv
-```
+###\n2. Navigeer naar de map waar je de repository hebt gecloned:
+    ```
+    cd bpopencv
+    ```
 
-3. Maak een build map aan genaamd linux:
-```
-mkdir linux
-```
+###\n3. Maak een build map aan genaamd linux:
+    ```
+    mkdir linux
+    ```
 
-4. Navigeer naar de linux map:
-```
-cd linux
-```
+###\n4. Navigeer naar de linux map:
+    ```
+    cd linux
+    ```
 
-5. Maak de makefile aan met cmake:
-```
-cmake ..
-```
+###\n5. Maak de makefile aan met cmake:
+    ```
+    cmake ..
+    ```
 
-6. Compileer het programma met make:
-```
-make
-```
+###\n6. Compileer het programma met make:
+    ```
+    make
+    ```
 
-7. Het programma is nu klaar voor gebruik. Je kunt het uitvoeren met de volgende commando's:
+###\n7. Het programma is nu klaar voor gebruik. Je kunt het uitvoeren met de volgende commando's:
 - Voor de interactive modus:
-```
-sudo ./OpenCV -i
-```
+    ```
+    sudo ./OpenCV -i
+    ```
+
 - Voor de batch modus:
 ```
 sudo ./OpenCV -b
 ```
-Sudo is nodig om toegang te krijgen tot de webcam.
+\nSudo is nodig om toegang te krijgen tot de webcam.
 Als de camera niet gevonden wordt, voeg de port toe aan het docker. 
 Als de camera nog steeds niet gevonden wordt, controleer dan of de juiste camera index bij de cap() is ingesteld in de constructor van `openCvHandler.cpp`.
-Voor ingebouwde webcams is dit meestal 0, voor externe webcams 1 of hoger.
+Voor ingebouwde webcams is dit meestal 0, voor externe webcams 1 of hoger.\n
 
 ---------------------------------------------
