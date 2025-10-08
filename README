@@ -116,3 +116,7 @@ Er is doxygen documentatie aanwezig in de header files van de code. Doxygen is w
 - Getters en setters
 - Operators
 Als één van deze functies niet voor zich spreekt, is er wel doxygen documentatie aanwezig.<br><br>
+Als Valgrind niet gevonden wordt tijdens het make commando kan dit genegeerd worden. Mocht je Valgrind willen gebruiken, zorg er dan voor dat het correct is geïnstalleerd op je systeem:<br>
+```
+sudo apt update && sudo apt install valgrind
+```
