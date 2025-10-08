@@ -1,10 +1,10 @@
 # Beroepsproduct OpenCV WOR-Robots
 #### Door: Sara Wieland
 
-Dit programma is geschreven voor het OpenCV beroepsproduct van WOR-Robots. Dit programma biedt de mogelijkheid een webcam input uit te lezen en hier verschillende kleuren figuren in te herkennen. 
-Er worden twee modus aangeboden:
-    - Interactive modus: Hierin kan de gebruiker zelf de kleur en vorm selecteren die herkend moet worden en visuele feedback krijgen over waar de figuren op de input aanwezig zijn, welke waardes ze hebben en hoelang het duurde om ze te herkennen.
-    - Batch modus: Hierin kan de gebruiker doormiddel van een input bestand meerdere herkenningen achter elkaar uitvoeren. De resultaten worden direct weergegeven in de terminal en niet gevisualiseerd.
+Dit programma is geschreven voor het OpenCV beroepsproduct van WOR-Robots. Dit programma biedt de mogelijkheid een webcam input uit te lezen en hier verschillende kleuren figuren in te herkennen. <br>
+Er worden twee modus aangeboden:<br>
+    - Interactive modus: Hierin kan de gebruiker zelf de kleur en vorm selecteren die herkend moet worden en visuele feedback krijgen over waar de figuren op de input aanwezig zijn, welke waardes ze hebben en hoelang het duurde om ze te herkennen.<br>
+    - Batch modus: Hierin kan de gebruiker doormiddel van een input bestand meerdere herkenningen achter elkaar uitvoeren. De resultaten worden direct weergegeven in de terminal en niet gevisualiseerd.<br>
  
 ---------------------------------------------
 
@@ -16,33 +16,33 @@ Er worden twee modus aangeboden:
 
 ### Installatie
 
-###1. Clone de repository van de GitHub pagina op een gewenste locatie:
+###1. Clone de repository van de GitHub pagina op een gewenste locatie:<br>
     ```
     git clone https://bitbucket.aimsites.nl/users/sj.wieland_student.han.nl/repos/bpopencv/browse
     ```
-In de aangeleverde docker container is OpenCV al geïnstalleerd. Indien je het programma lokaal wilt draaien, installeer dan eerst OpenCV op je systeem.
+<br>In de aangeleverde docker container is OpenCV al geïnstalleerd. Indien je het programma lokaal wilt draaien, installeer dan eerst OpenCV op je systeem.
 
-###\n2. Navigeer naar de map waar je de repository hebt gecloned:
+###2. Navigeer naar de map waar je de repository hebt gecloned:<br>
     ```
     cd bpopencv
     ```
 
-###3. Maak een build map aan genaamd linux:
+###3. Maak een build map aan genaamd linux:<br>
     ```
     mkdir linux
     ```
 
-###4. Navigeer naar de linux map:
+###4. Navigeer naar de linux map:<br>
     ```
     cd linux
     ```
 
-###5. Maak de makefile aan met cmake:
+###5. Maak de makefile aan met cmake:<br>
     ```
     cmake ..
     ```
 
-###6. Compileer het programma met make:
+###6. Compileer het programma met make:<br>
     ```
     make
     ```
@@ -58,36 +58,36 @@ In de aangeleverde docker container is OpenCV al geïnstalleerd. Indien je het p
     sudo ./OpenCV -b
     ```
 
-Sudo is nodig om toegang te krijgen tot de webcam.
-Als de camera niet gevonden wordt, voeg de port toe aan het docker. 
-Als de camera nog steeds niet gevonden wordt, controleer dan of de juiste camera index bij de cap() is ingesteld in de constructor van `openCvHandler.cpp`.
-Voor ingebouwde webcams is dit meestal 0, voor externe webcams 1 of hoger.
+Sudo is nodig om toegang te krijgen tot de webcam.<br>
+Als de camera niet gevonden wordt, voeg de port toe aan het docker. <br>
+Als de camera nog steeds niet gevonden wordt, controleer dan of de juiste camera index bij de cap() is ingesteld in de constructor van `openCvHandler.cpp`.<br>
+Voor ingebouwde webcams is dit meestal 0, voor externe webcams 1 of hoger.<br>
 
 ---------------------------------------------
 
 ### Gebruik
 
 #### Interactive modus
-In de interactive modus kan de gebruiker zelf de kleur en vorm selecteren die herkend moet worden. Dit kan door via de terminal input te geven.
+In de interactive modus kan de gebruiker zelf de kleur en vorm selecteren die herkend moet worden. Dit kan door via de terminal input te geven.<br>
 Er wordt duidelijke feedback gegeven aan de gebruiker wanneer de input niet correct is.
 
-De input wordt verwacht in de volgende vorm:
+De input wordt verwacht in de volgende vorm:<br>
     ```
     <vorm> <kleur>
     ```
-Waarbij `<vorm>` een van de volgende opties is:
+Waarbij `<vorm>` een van de volgende opties is:<br>
 - cirkel
 - rechthoek
 - vierkant
 - driehoek
 - halve cirkel
-En `<kleur>` een van de volgende opties is:
+<br>En `<kleur>` een van de volgende opties is:<br>
 - roze
 - groen
 - geel
 - oranje
 
-Bijvoorbeeld:
+Bijvoorbeeld:<br>
     ```
     cirkel roze
     vierkant groen
@@ -95,18 +95,18 @@ Bijvoorbeeld:
     halve cirkel oranje
     ```
 
-Na het invoeren zal er een afbeelding gemaakt worden van de webcam input. Hierop worden de gespecificeerde vormen gemarkeerd en hun x,y coordinaten, oppervlakte en de hoeveelheid ticks om ze te herkennen worden weergegeven. Deze afbeelding wordt getoond in een apart venster.
-De gebruiker kan meerdere vormen achter elkaar invoeren. Als de gebruiker klaar is met het invoeren van vormen, kan hij/zij "exit" invoeren om het programma te beëindigen.
+Na het invoeren zal er een afbeelding gemaakt worden van de webcam input. Hierop worden de gespecificeerde vormen gemarkeerd en hun x,y coordinaten, oppervlakte en de hoeveelheid ticks om ze te herkennen worden weergegeven. Deze afbeelding wordt getoond in een apart venster.<br>
+De gebruiker kan meerdere vormen achter elkaar invoeren. Als de gebruiker klaar is met het invoeren van vormen, kan hij/zij "exit" invoeren om het programma te beëindigen.<br>
     ```
     exit
     ```
 
 #### Batch modus
 
-In de batch modus kan de gebruiker de inhoud van input.txt aanpassen om meerdere herkenningen achter elkaar uit te voeren. De resultaten worden direct weergegeven in de terminal en niet gevisualiseerd.
-In dit bestand kan de gebruiker meerdere regels toevoegen, waarbij elke regel een herkenning specificeert in dezelfde vorm als in de interactive modus.
+In de batch modus kan de gebruiker de inhoud van input.txt aanpassen om meerdere herkenningen achter elkaar uit te voeren. De resultaten worden direct weergegeven in de terminal en niet gevisualiseerd.<br>
+In dit bestand kan de gebruiker meerdere regels toevoegen, waarbij elke regel een herkenning specificeert in dezelfde vorm als in de interactive modus.<br>
 
-Hier bij wordt commentaar ondersteund door een '#' te gebruiken. Alles na een '#' op een regel wordt genegeerd.
+Hier bij wordt commentaar ondersteund door een '#' te gebruiken. Alles na een '#' op een regel wordt genegeerd.<br>
     ```
     '#' Dit is een commentaar
     cirkel roze  '#' Herken roze cirkels
@@ -114,7 +114,7 @@ Hier bij wordt commentaar ondersteund door een '#' te gebruiken. Alles na een '#
     driehoek geel
     halve cirkel oranje
     ```
-Overige whitespaces worden ook genegeerd, dus de gebruiker hoeft zich geen zorgen te maken over extra spaties of lege regels.
-Bij incorrecte input zal er een foutmelding in de terminal verschijnen over welke regel incorrect is, maar het programma zal doorgaan met de volgende regel.
+<br>Overige whitespaces worden ook genegeerd, dus de gebruiker hoeft zich geen zorgen te maken over extra spaties of lege regels.<br>
+Bij incorrecte input zal er een foutmelding in de terminal verschijnen over welke regel incorrect is, maar het programma zal doorgaan met de volgende regel.<br>
 
 ----------------------------------------------
