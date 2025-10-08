@@ -4,8 +4,8 @@
 #include "Logger.hpp"
 
 
-OpenCvHandler::OpenCvHandler(bool interactiveMode)
-    : cap(4), isInteractiveMode(interactiveMode), captureAvailable(true), inputHandler(InputHandler()), shapeHandler(ShapeHandler()), colorManager(ColorManager()), shouldStop(false), batchFilePath("../input.txt")
+OpenCvHandler::OpenCvHandler(char** argv)
+    : cap(4), isInteractiveMode(std::string(argv[1]) == "-i"), captureAvailable(true), inputHandler(InputHandler()), shapeHandler(ShapeHandler()), colorManager(ColorManager()), shouldStop(false)
 {
     if (!cap.isOpened()) {
         captureAvailable = false;
@@ -53,6 +53,11 @@ OpenCvHandler::OpenCvHandler(bool interactiveMode)
         updateImage();
     } else {
         Logger::getInstance().log("Batch mode initiated. Processing will begin shortly...\n");
+        if (argv[2] != nullptr) {
+            batchFilePath = std::string(argv[2]);
+        } else {
+            batchFilePath = "../input.txt";
+        }
         
         // Implement actual batch processing
         processBatchMode();

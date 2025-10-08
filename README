@@ -53,18 +53,21 @@ make
 ### 7. Het programma is nu klaar voor gebruik. Je kunt het uitvoeren met de volgende commando's:
 - Voor de interactive modus:
 ```
-sudo ./OpenCV -i
+sudo ./bpOpenCV -i
 ```
 
 - Voor de batch modus:
 ```
-sudo ./OpenCV -b
+sudo ./bpOpenCV -b
+of
+sudo ./bpOpenCV -b <pad_naar_input_bestand>
 ```
 
 Sudo is nodig om toegang te krijgen tot de webcam.<br>
 Als de camera niet gevonden wordt, voeg de port toe aan het docker. <br>
 Als de camera nog steeds niet gevonden wordt, controleer dan of de juiste camera index bij de cap() is ingesteld in de constructor van `openCvHandler.cpp`.<br>
 Voor ingebouwde webcams is dit meestal 0, voor externe webcams 1 of hoger.<br>
+Als er geen pad meegegeven wordt bij de batch modus, wordt er standaard gezocht naar een bestand genaamd `input.txt` in de parent directory van de linux map.<br>
 
 ---------------------------------------------
 

@@ -23,7 +23,7 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char** argv)
     {
         // Interactive mode
 
-        OpenCvHandler handler(std::string(argv[1]) == "-i");
+        OpenCvHandler handler(argv);
         //stops program if no camera found
         if (!handler.getCaptureAvailable()) {
             exit(-1);
@@ -41,7 +41,8 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char** argv)
     {
         // Batch mode
 
-        OpenCvHandler handler(false);
+        OpenCvHandler handler(argv);
+
         //stops program if no camera found
         if (!handler.getCaptureAvailable()) {
             exit(-1);

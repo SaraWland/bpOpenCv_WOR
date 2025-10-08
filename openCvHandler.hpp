@@ -14,11 +14,11 @@ class OpenCvHandler {
 public:
     /**
      * @brief Construct a new Open Cv Handler object
-     * @param interactiveMode
+     * @param argv Program arguments to determine mode and batch file path.
      * @details If true shows OpenCV windows for interactive mode, if false runs in batch mode.
      *          Also responsible for setting up the initial state of the program.
      */
-    explicit OpenCvHandler(bool interactiveMode);
+    explicit OpenCvHandler(char** argv);
     /**
      * @brief Destroy the Open Cv Handler object
      * @details Cleans up resources and ensures proper shutdown of threads and OpenCV windows.
