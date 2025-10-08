@@ -1,5 +1,5 @@
 # Beroepsproduct OpenCV WOR-Robots
-# Sara Wieland
+#### Door: Sara Wieland
 
 Dit programma is geschreven voor het OpenCV beroepsproduct van WOR-Robots. Dit programma biedt de mogelijkheid een webcam input uit te lezen en hier verschillende kleuren figuren in te herkennen. 
 Er worden twee modus aangeboden:
