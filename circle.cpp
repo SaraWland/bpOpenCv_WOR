@@ -9,7 +9,7 @@ Circle::Circle()
     this->type = ShapeType::CIRCLE;
 }
 
-cv::Mat Circle::findShape(cv::Mat& inputImage, cv::Mat& originalImage, cv::Mat& contourImage)
+cv::Mat Circle::findShape(cv::Mat& inputImage, cv::Mat& originalImage, cv::Mat& contourImage, bool isInteractive)
 {
     cv::Mat outputImage = originalImage.clone();
     cv::Mat processableImage;
@@ -108,51 +108,59 @@ cv::Mat Circle::findShape(cv::Mat& inputImage, cv::Mat& originalImage, cv::Mat& 
         int radius = cvRound(completeCircles[i][2]);
         double area = CV_PI * radius * radius;
         
-        cv::circle(outputImage, center, radius, cv::Scalar(0, 255, 0), 2);
-        cv::circle(outputImage, center, 2, cv::Scalar(0, 0, 255), 3);
+            cv::circle(outputImage, center, radius, cv::Scalar(0, 255, 0), 2);
+            cv::circle(outputImage, center, 2, cv::Scalar(0, 0, 255), 3);
         
-        // Draw coords, area and individual clock ticks on output image
-        // make sure text is within image bounds and does not overlap with the shape
-        std::string info = "X,Y(" + std::to_string(center.x) + ", " + std::to_string(center.y) + "), A: " + std::to_string(static_cast<int>(area)) + ", T: " + std::to_string(individualDetectionTimes[i]) + " ticks";
+            // Draw coords, area and individual clock ticks on output image
+            // make sure text is within image bounds and does not overlap with the shape
+            std::string info = "X,Y(" + std::to_string(center.x) + ", " + std::to_string(center.y) + "), A: " + std::to_string(static_cast<int>(area)) + ", T: " + std::to_string(individualDetectionTimes[i]) + " ticks";
         
-        // Calculate text size to ensure it fits
-        int baseline = 0;
-        cv::Size textSize = cv::getTextSize(info, cv::FONT_HERSHEY_SIMPLEX, 0.4, 1, &baseline);
+            // Calculate text size to ensure it fits
+            int baseline = 0;
+            cv::Size textSize = cv::getTextSize(info, cv::FONT_HERSHEY_SIMPLEX, 0.4, 1, &baseline);
         
-        // Start with default position (right and above the center)
-        cv::Point textPos(center.x + radius + 10, center.y - 10);
+            // Start with default position (right and above the center)
+            cv::Point textPos(center.x + radius + 10, center.y - 10);
         
-        // Check if text goes beyond right edge
-        if (textPos.x + textSize.width > outputImage.cols) {
-            textPos.x = center.x - radius - textSize.width - 10; // Move to left side
+            // Check if text goes beyond right edge
+            if (textPos.x + textSize.width > outputImage.cols) {
+                textPos.x = center.x - radius - textSize.width - 10; // Move to left side
+            }
+        
+            // Check if text goes beyond left edge
+            if (textPos.x < 0) {
+                textPos.x = 10; // Move to left margin
+            }
+        
+            // Check if text goes above top edge
+            if (textPos.y - textSize.height < 0) {
+                textPos.y = center.y + radius + textSize.height + 10; // Move below shape
+            }
+        
+            // Check if text goes below bottom edge
+            if (textPos.y > outputImage.rows) {
+                textPos.y = outputImage.rows - 10; // Move to bottom margin
+            }
+        
+            cv::putText(outputImage, info, textPos, cv::FONT_HERSHEY_SIMPLEX, 0.4, cv::Scalar(0, 0, 0), 1);
+        
+            // Draw circles on black background for visualization
+            cv::circle(contourImage, center, radius, cv::Scalar(255, 255, 255), 2);
+            cv::circle(contourImage, center, 2, cv::Scalar(0, 255, 0), 3);
+        if (!isInteractive) {
+            // Output x, y, area and individual clock ticks to logger
+            Logger::getInstance().log("Circle gedetecteerd op X,Y(" + std::to_string(center.x) + ", " + std::to_string(center.y) + "), Oppervlakte in pixels: " + std::to_string(static_cast<int>(area)) + ", Ticks: " + std::to_string(individualDetectionTimes[i]) + " ticks\n" );
         }
-        
-        // Check if text goes beyond left edge
-        if (textPos.x < 0) {
-            textPos.x = 10; // Move to left margin
-        }
-        
-        // Check if text goes above top edge
-        if (textPos.y - textSize.height < 0) {
-            textPos.y = center.y + radius + textSize.height + 10; // Move below shape
-        }
-        
-        // Check if text goes below bottom edge
-        if (textPos.y > outputImage.rows) {
-            textPos.y = outputImage.rows - 10; // Move to bottom margin
-        }
-        
-        cv::putText(outputImage, info, textPos, cv::FONT_HERSHEY_SIMPLEX, 0.4, cv::Scalar(0, 0, 0), 1);
-        
-        // Draw circles on black background for visualization
-        cv::circle(contourImage, center, radius, cv::Scalar(255, 255, 255), 2);
-        cv::circle(contourImage, center, 2, cv::Scalar(0, 255, 0), 3);
     }
 
     // Always display detection timing information
     if (completeCircles.size() == 0){
         std::string noDetectionMsg = "Geen cirkels gedetecteerd - " + std::to_string(totalClockTicks) + " ticks";
         cv::putText(outputImage, noDetectionMsg, cv::Point(10, 30), cv::FONT_HERSHEY_SIMPLEX, 0.7, cv::Scalar(0, 0, 255), 2);
+        if (!isInteractive)
+        {
+            Logger::getInstance().log(noDetectionMsg + "\n");
+        }
     }
 
     return outputImage;

@@ -22,10 +22,38 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char** argv)
     if (std::string(argv[1]) == "-i")
     {
         // Interactive mode
+
+        OpenCvHandler handler(std::string(argv[1]) == "-i");
+        //stops program if no camera found
+        if (!handler.getCaptureAvailable()) {
+            exit(-1);
+        }
+
+        while (true) {
+            handler.updateImage();
+            
+            if (handler.shouldExit()) {
+                break; 
+            }
+        }
+
     } else if (std::string(argv[1]) == "-b")
     {
         // Batch mode
-    } else 
+
+        OpenCvHandler handler(false);
+        //stops program if no camera found
+        if (!handler.getCaptureAvailable()) {
+            exit(-1);
+        }
+
+        while (true) 
+        {   
+            if (handler.shouldExit()) {
+                break; 
+            }
+        }
+    } else
     {
         Logger::getInstance().log(
             "\nProgram argument not recognized. Please launch the program in one of the following modes:\n\n"
@@ -37,24 +65,6 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char** argv)
             "------------------------------------\n\n"
         );
         return -1;
-    }
-
-    OpenCvHandler handler(std::string(argv[1]) == "-i");
-    //stops program if no camera found
-    if (!handler.getCaptureAvailable()) {
-        exit(-1);
-    }
-
-    while(true) 
-    {
-        if (std::string(argv[1]) == "-i")
-        {
-            handler.updateImage();
-            
-            if (handler.shouldExit()) {
-                break; 
-            }
-        }
     }
 
     return 0;

@@ -11,7 +11,7 @@ HalfCircle::HalfCircle()
     this->type = ShapeType::HALF_CIRCLE;
 }
 
-cv::Mat HalfCircle::findShape(cv::Mat& inputImage, cv::Mat& originalImage, cv::Mat& contourImage)
+cv::Mat HalfCircle::findShape(cv::Mat& inputImage, cv::Mat& originalImage, cv::Mat& contourImage, bool isInteractive)
 {
     cv::Mat outputImage = originalImage.clone();
     cv::Mat processableImage;
@@ -256,13 +256,21 @@ cv::Mat HalfCircle::findShape(cv::Mat& inputImage, cv::Mat& originalImage, cv::M
         cv::polylines(contourImage, validHalfCircles[i], true, cv::Scalar(255, 255, 255), 2);
         cv::circle(contourImage, center, 3, cv::Scalar(0, 255, 0), -1);
     
-        // Logger::getInstance().log("Half-circle detected at (" + std::to_string(center.x) + ", " + std::to_string(center.y) + ") with area " + std::to_string(static_cast<int>(area)) + ") and radius " + std::to_string(static_cast<int>(radius)) );
+        if (!isInteractive) 
+        {
+            // Output x, y, area and individual clock ticks to logger
+            Logger::getInstance().log("Halve cirkel gedetecteerd op X,Y(" + std::to_string(center.x) + ", " + std::to_string(center.y) + "), Oppervlakte: " + std::to_string(static_cast<int>(area)) + ", Ticks: " + std::to_string(static_cast<long long>(detectionClockTicks + individualClockTicks)) + " ticks\n" );
+        }
     }
     
     // Always display detection timing information
-    if (validHalfCircles.size() == 0){
+    if (validHalfCircles.size() == 0) {
         std::string noDetectionMsg = "Geen halve cirkels gedetecteerd - " + std::to_string(totalClockTicks) + " ticks";
         cv::putText(outputImage, noDetectionMsg, cv::Point(10, 30), cv::FONT_HERSHEY_SIMPLEX, 0.7, cv::Scalar(0, 0, 255), 2);
+        if (!isInteractive)
+        {
+            Logger::getInstance().log(noDetectionMsg + "\n");
+        }
     }
 
     return outputImage;

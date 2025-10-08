@@ -9,7 +9,7 @@ public:
     HalfCircle();
     ~HalfCircle() = default;
 
-    cv::Mat findShape(cv::Mat& inputImage, cv::Mat& originalImage, cv::Mat& contourImage) override;
+    cv::Mat findShape(cv::Mat& inputImage, cv::Mat& originalImage, cv::Mat& contourImage, bool isInteractive) override;
 
 private:
 

@@ -5,7 +5,7 @@
 
 
 OpenCvHandler::OpenCvHandler(bool interactiveMode)
-    : cap(4), isInteractiveMode(interactiveMode), captureAvailable(true), inputHandler(InputHandler()), shapeHandler(ShapeHandler()), colorManager(ColorManager()), shouldStop(false)
+    : cap(4), isInteractiveMode(interactiveMode), captureAvailable(true), inputHandler(InputHandler()), shapeHandler(ShapeHandler()), colorManager(ColorManager()), shouldStop(false), batchFilePath("../input.txt")
 {
     if (!cap.isOpened()) {
         captureAvailable = false;
@@ -51,6 +51,11 @@ OpenCvHandler::OpenCvHandler(bool interactiveMode)
         cap >> outputImage;
         cap >> contourImage;
         updateImage();
+    } else {
+        Logger::getInstance().log("Batch mode initiated. Processing will begin shortly...\n");
+        
+        // Implement actual batch processing
+        processBatchMode();
     }
 
 }
@@ -62,7 +67,13 @@ OpenCvHandler::~OpenCvHandler()
         inputThread.join();
     }
     cap.release();
-    cv::destroyWindow("outputWindow");
+    if (isInteractiveMode)
+    {
+        cv::destroyWindow("processedColorWindow");
+        cv::destroyWindow("processedShapeWindow");
+        cv::destroyWindow("resultWindow");
+        cv::destroyWindow("outputWindow");
+    }
 }
 
 void OpenCvHandler::updateImage()
@@ -101,7 +112,7 @@ void OpenCvHandler::setupInputThread() {
 
             cv::Mat colorMask = colorManager.getMask(originalImage, parsedInput.second);
             cv::Mat tempContourImage;
-            cv::Mat processedImage = shapeHandler.detectShape(colorMask, parsedInput.first, originalImage, tempContourImage);
+            cv::Mat processedImage = shapeHandler.detectShape(colorMask, parsedInput.first, originalImage, tempContourImage, isInteractiveMode);
 
             // Show the filter image and processed image
             filterImage = colorMask;
@@ -110,4 +121,36 @@ void OpenCvHandler::setupInputThread() {
 
         } // No sleep because always waiting for input
     });
+}
+
+void OpenCvHandler::processBatchMode()
+{
+    Logger::getInstance().log("Starting batch processing...\n");
+    // Logger::getInstance().log("Batch mode not yet implemented.\n");
+
+    const std::vector<std::pair<ShapeType, Color>>& batchInputs = inputHandler.getBatchInput(batchFilePath);
+
+    for (long unsigned int i = 0; i < batchInputs.size(); ++i) {
+        cap >> originalImage;
+        if (originalImage.empty()) { 
+            Logger::getInstance().log("Error: Could not capture image from camera.\n");
+            shouldStop = true;
+            return;
+        }
+        const std::pair<ShapeType, Color>& input = batchInputs[i];
+        // Logger::getInstance().log("Processing input " + std::to_string(i + 1) + " of " + std::to_string(batchInputs.size()) + "...\n");
+        // Logger::getInstance().log("Shape: " + std::to_string(static_cast<int>(input.first)) + ", Color: " + std::to_string(static_cast<int>(input.second)) + "\n");
+        // Implement processing logic here
+
+        cv::Mat colorMask = colorManager.getMask(originalImage, input.second);
+        cv::Mat processedImage = shapeHandler.detectShape(colorMask, input.first, originalImage, contourImage, isInteractiveMode);
+        // To save images write processedImage to file if needed
+        // std::string outputFilePath = "output/batch_" + std::to_string(i) + ".png";
+        // cv::imwrite(outputFilePath, processedImage);
+
+
+
+    }
+
+    shouldStop = true;
 }

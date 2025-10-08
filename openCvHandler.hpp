@@ -22,7 +22,7 @@ public:
     void updateImage();
 
     void setupInputThread();
-
+    void processBatchMode();
 
     // Getters for private members
     bool getCaptureAvailable() const { return captureAvailable; }
@@ -42,6 +42,7 @@ private:
     std::thread inputThread;
     std::atomic<bool> shouldStop;
 
+    std::string batchFilePath;
 };
 
 #endif

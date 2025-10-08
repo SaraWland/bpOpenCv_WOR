@@ -21,7 +21,7 @@ ShapeHandler::~ShapeHandler()
     shapes.clear();
 }
 
-cv::Mat ShapeHandler::detectShape(cv::Mat& colorMask, ShapeType shapeType, cv::Mat& originalImage, cv::Mat& contourImage)
+cv::Mat ShapeHandler::detectShape(cv::Mat& colorMask, ShapeType shapeType, cv::Mat& originalImage, cv::Mat& contourImage, bool isInteractive)
 {
     contourImage = cv::Mat::zeros(originalImage.size(), CV_8UC3);
     
@@ -29,19 +29,19 @@ cv::Mat ShapeHandler::detectShape(cv::Mat& colorMask, ShapeType shapeType, cv::M
     switch (shapeType)
     {
     case ShapeType::CIRCLE:
-        processedImage = shapes.at(0)->findShape(colorMask, originalImage, contourImage);
+        processedImage = shapes.at(0)->findShape(colorMask, originalImage, contourImage, isInteractive);
         break;
     case ShapeType::RECTANGLE:
-        processedImage = shapes.at(1)->findShape(colorMask, originalImage, contourImage);
+        processedImage = shapes.at(1)->findShape(colorMask, originalImage, contourImage, isInteractive);
         break;
     case ShapeType::TRIANGLE:
-        processedImage = shapes.at(2)->findShape(colorMask, originalImage, contourImage);
+        processedImage = shapes.at(2)->findShape(colorMask, originalImage, contourImage, isInteractive);
         break;
     case ShapeType::SQUARE:
-        processedImage = shapes.at(3)->findShape(colorMask, originalImage, contourImage);
+        processedImage = shapes.at(3)->findShape(colorMask, originalImage, contourImage, isInteractive);
         break;
     case ShapeType::HALF_CIRCLE:
-        processedImage = shapes.at(4)->findShape(colorMask, originalImage, contourImage);
+        processedImage = shapes.at(4)->findShape(colorMask, originalImage, contourImage, isInteractive);
         break;
     default:
         break;

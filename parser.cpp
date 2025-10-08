@@ -2,7 +2,10 @@
 #include <sstream>
 #include <vector>
 #include <utility>
+#include <fstream>
+
 #include "parser.hpp"
+#include "Logger.hpp"
 
 std::pair<ShapeType, Color> Parser::parseInput(const std::string& input)
 {
@@ -74,4 +77,50 @@ std::pair<ShapeType, Color> Parser::parseInput(const std::string& input)
     }
 
     return {shape, color};
+}
+
+void Parser::parseBatchInput(const std::string& batchFilePath, std::vector<std::pair<ShapeType, Color>>& batchInputs)
+{
+    std::ifstream file(batchFilePath);
+    if (!file.is_open()) {
+        Logger::getInstance().log("Error: Could not open batch input file: " + batchFilePath + "\n");
+        return;
+    }
+
+    int i = 0;
+
+    std::string line;
+    while (std::getline(file, line)) {
+        i += 1;
+
+        // Ignore empty lines
+        if (line.empty()) {
+            continue;
+        }
+
+        // If # then ignore rest of line
+        for (size_t i = 0; i < line.size(); ++i) {
+            if (line[i] == '#') {
+                line = line.substr(0, i);
+                break;
+            }
+        }
+        if (line.empty())
+        {
+            continue;
+        }
+
+        // Parse lines with parseLine
+        std::pair<ShapeType, Color> parsed = parseInput(line);
+        // Store in batchInputs vector if valid input
+        if (parsed.first == ShapeType::UNKNOWN || parsed.second == Color::UNKNOWN || parsed.first == ShapeType::EXIT) 
+        {
+            Logger::getInstance().log("Warning: Invalid input at line " + std::to_string(i) + ": '" + line + "'. Skipping this entry.\n");
+            continue;
+        }
+        batchInputs.push_back(parsed);
+    }
+
+    file.close();
+    Logger::getInstance().log("Batch input file parsed successfully. Total entries: " + std::to_string(batchInputs.size()) + "\n");
 }

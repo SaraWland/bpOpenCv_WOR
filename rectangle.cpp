@@ -10,7 +10,7 @@ Rectangle::Rectangle()
     this->type = ShapeType::RECTANGLE;
 }
 
-cv::Mat Rectangle::findShape(cv::Mat& inputImage, cv::Mat& originalImage, cv::Mat& contourImage)
+cv::Mat Rectangle::findShape(cv::Mat& inputImage, cv::Mat& originalImage, cv::Mat& contourImage, bool isInteractive)
 {
     cv::Mat outputImage = originalImage.clone();
     cv::Mat processableImage;
@@ -181,12 +181,22 @@ cv::Mat Rectangle::findShape(cv::Mat& inputImage, cv::Mat& originalImage, cv::Ma
         // Draw contours on black background for visualization
         cv::polylines(contourImage, approx, true, cv::Scalar(255, 255, 255), 2);
         cv::circle(contourImage, center, 3, cv::Scalar(0, 255, 0), -1);
+
+        if (!isInteractive) 
+        {
+            // Output x, y, area and individual clock ticks to logger
+            Logger::getInstance().log("Rechthoek gedetecteerd op X,Y(" + std::to_string(center.x) + ", " + std::to_string(center.y) + "), Oppervlakte in pixels: " + std::to_string(static_cast<int>(area)) + ", Ticks: " + std::to_string(individualDetectionTimes[i]) + " ticks\n" );
+        }
     }
     
     // Always display detection timing information
     if (validRectangles.size() == 0){
         std::string noDetectionMsg = "Geen rechthoeken gedetecteerd - " + std::to_string(totalClockTicks) + " ticks";
         cv::putText(outputImage, noDetectionMsg, cv::Point(10, 30), cv::FONT_HERSHEY_SIMPLEX, 0.7, cv::Scalar(0, 0, 255), 2);
+        if (!isInteractive)
+        {
+            Logger::getInstance().log(noDetectionMsg + "\n");
+        }
     }
     
     return outputImage;

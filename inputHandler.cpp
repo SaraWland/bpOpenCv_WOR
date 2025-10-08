@@ -52,3 +52,9 @@ bool InputHandler::validateInput(std::pair<ShapeType, Color> input)
 {
     return (input.first != ShapeType::UNKNOWN && input.second != Color::UNKNOWN);
 }
+
+std::vector<std::pair<ShapeType, Color>>& InputHandler::getBatchInput(const std::string& filePath)
+{
+    parser.parseBatchInput(filePath, batchInputs);
+    return batchInputs;
+}
