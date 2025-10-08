@@ -3,8 +3,8 @@
 
 Dit programma is geschreven voor het OpenCV beroepsproduct van WOR-Robots. Dit programma biedt de mogelijkheid een webcam input uit te lezen en hier verschillende kleuren figuren in te herkennen. <br>
 Er worden twee modus aangeboden:<br>
-    - Interactive modus: Hierin kan de gebruiker zelf de kleur en vorm selecteren die herkend moet worden en visuele feedback krijgen over waar de figuren op de input aanwezig zijn, welke waardes ze hebben en hoelang het duurde om ze te herkennen.<br>
-    - Batch modus: Hierin kan de gebruiker doormiddel van een input bestand meerdere herkenningen achter elkaar uitvoeren. De resultaten worden direct weergegeven in de terminal en niet gevisualiseerd.<br>
+    - Interactive modus: <br>Hierin kan de gebruiker zelf de kleur en vorm selecteren die herkend moet worden en visuele feedback krijgen over waar de figuren op de input aanwezig zijn, welke waardes ze hebben en hoelang het duurde om ze te herkennen.<br>
+    - Batch modus: <br>Hierin kan de gebruiker doormiddel van een input bestand meerdere herkenningen achter elkaar uitvoeren. De resultaten worden direct weergegeven in de terminal en niet gevisualiseerd.<br>
  
 ---------------------------------------------
 
