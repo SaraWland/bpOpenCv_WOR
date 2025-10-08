@@ -17,46 +17,46 @@ Er worden twee modus aangeboden:<br>
 ### Installatie
 
 ### 1. Clone de repository van de GitHub pagina op een gewenste locatie:<br>
-    ```
+```
     git clone https://bitbucket.aimsites.nl/users/sj.wieland_student.han.nl/repos/bpopencv/browse
-    ```
+```
 <br>In de aangeleverde docker container is OpenCV al geïnstalleerd. Indien je het programma lokaal wilt draaien, installeer dan eerst OpenCV op je systeem.
 
 ### 2. Navigeer naar de map waar je de repository hebt gecloned:<br>
-    ```
+```
     cd bpopencv
-    ```
+```
 
 ### 3. Maak een build map aan genaamd linux:<br>
-    ```
+```
     mkdir linux
-    ```
+```
 
 ### 4. Navigeer naar de linux map:<br>
-    ```
+```
     cd linux
-    ```
+```
 
 ### 5. Maak de makefile aan met cmake:<br>
-    ```
+```
     cmake ..
-    ```
+```
 
 ### 6. Compileer het programma met make:<br>
-    ```
+```
     make
-    ```
+```
 
 ### 7. Het programma is nu klaar voor gebruik. Je kunt het uitvoeren met de volgende commando's:
 - Voor de interactive modus:
-    ```
+```
     sudo ./OpenCV -i
-    ```
+```
 
 - Voor de batch modus:
-    ```
+```
     sudo ./OpenCV -b
-    ```
+```
 
 Sudo is nodig om toegang te krijgen tot de webcam.<br>
 Als de camera niet gevonden wordt, voeg de port toe aan het docker. <br>
