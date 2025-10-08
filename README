@@ -16,38 +16,38 @@ Er worden twee modus aangeboden:<br>
 
 ### Installatie
 
-###1. Clone de repository van de GitHub pagina op een gewenste locatie:<br>
+### 1. Clone de repository van de GitHub pagina op een gewenste locatie:<br>
     ```
     git clone https://bitbucket.aimsites.nl/users/sj.wieland_student.han.nl/repos/bpopencv/browse
     ```
 <br>In de aangeleverde docker container is OpenCV al geïnstalleerd. Indien je het programma lokaal wilt draaien, installeer dan eerst OpenCV op je systeem.
 
-###2. Navigeer naar de map waar je de repository hebt gecloned:<br>
+### 2. Navigeer naar de map waar je de repository hebt gecloned:<br>
     ```
     cd bpopencv
     ```
 
-###3. Maak een build map aan genaamd linux:<br>
+### 3. Maak een build map aan genaamd linux:<br>
     ```
     mkdir linux
     ```
 
-###4. Navigeer naar de linux map:<br>
+### 4. Navigeer naar de linux map:<br>
     ```
     cd linux
     ```
 
-###5. Maak de makefile aan met cmake:<br>
+### 5. Maak de makefile aan met cmake:<br>
     ```
     cmake ..
     ```
 
-###6. Compileer het programma met make:<br>
+### 6. Compileer het programma met make:<br>
     ```
     make
     ```
 
-###7. Het programma is nu klaar voor gebruik. Je kunt het uitvoeren met de volgende commando's:
+### 7. Het programma is nu klaar voor gebruik. Je kunt het uitvoeren met de volgende commando's:
 - Voor de interactive modus:
     ```
     sudo ./OpenCV -i
@@ -74,14 +74,14 @@ Er wordt duidelijke feedback gegeven aan de gebruiker wanneer de input niet corr
 De input wordt verwacht in de volgende vorm:<br>
     ```
     <vorm> <kleur>
-    ```
+    ```<br>
 Waarbij `<vorm>` een van de volgende opties is:<br>
 - cirkel
 - rechthoek
 - vierkant
 - driehoek
-- halve cirkel
-<br>En `<kleur>` een van de volgende opties is:<br>
+- halve cirkel<br>
+En `<kleur>` een van de volgende opties is:<br>
 - roze
 - groen
 - geel
@@ -108,11 +108,11 @@ In dit bestand kan de gebruiker meerdere regels toevoegen, waarbij elke regel ee
 
 Hier bij wordt commentaar ondersteund door een '#' te gebruiken. Alles na een '#' op een regel wordt genegeerd.<br>
     ```
-    '#' Dit is een commentaar
-    cirkel roze  '#' Herken roze cirkels
-    vierkant groen
-    driehoek geel
-    halve cirkel oranje
+    '#' Dit is een commentaar<br>
+    cirkel roze  '#' Herken roze cirkels<br>
+    vierkant groen<br>
+    driehoek geel<br>
+    halve cirkel oranje<br>
     ```
 <br>Overige whitespaces worden ook genegeerd, dus de gebruiker hoeft zich geen zorgen te maken over extra spaties of lege regels.<br>
 Bij incorrecte input zal er een foutmelding in de terminal verschijnen over welke regel incorrect is, maar het programma zal doorgaan met de volgende regel.<br>
