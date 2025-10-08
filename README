@@ -74,7 +74,8 @@ Er wordt duidelijke feedback gegeven aan de gebruiker wanneer de input niet corr
 De input wordt verwacht in de volgende vorm:<br>
     ```
     <vorm> <kleur>
-    ```<br>
+    ```
+<br><br>
 Waarbij `<vorm>` een van de volgende opties is:<br>
 - cirkel
 - rechthoek
@@ -86,14 +87,6 @@ En `<kleur>` een van de volgende opties is:<br>
 - groen
 - geel
 - oranje
-
-Bijvoorbeeld:<br>
-    ```
-    cirkel roze
-    vierkant groen
-    driehoek geel
-    halve cirkel oranje
-    ```
 
 Na het invoeren zal er een afbeelding gemaakt worden van de webcam input. Hierop worden de gespecificeerde vormen gemarkeerd en hun x,y coordinaten, oppervlakte en de hoeveelheid ticks om ze te herkennen worden weergegeven. Deze afbeelding wordt getoond in een apart venster.<br>
 De gebruiker kan meerdere vormen achter elkaar invoeren. Als de gebruiker klaar is met het invoeren van vormen, kan hij/zij "exit" invoeren om het programma te beëindigen.<br>
@@ -107,13 +100,6 @@ In de batch modus kan de gebruiker de inhoud van input.txt aanpassen om meerdere
 In dit bestand kan de gebruiker meerdere regels toevoegen, waarbij elke regel een herkenning specificeert in dezelfde vorm als in de interactive modus.<br>
 
 Hier bij wordt commentaar ondersteund door een '#' te gebruiken. Alles na een '#' op een regel wordt genegeerd.<br>
-    ```
-    '#' Dit is een commentaar<br>
-    cirkel roze  '#' Herken roze cirkels<br>
-    vierkant groen<br>
-    driehoek geel<br>
-    halve cirkel oranje<br>
-    ```
 <br>Overige whitespaces worden ook genegeerd, dus de gebruiker hoeft zich geen zorgen te maken over extra spaties of lege regels.<br>
 Bij incorrecte input zal er een foutmelding in de terminal verschijnen over welke regel incorrect is, maar het programma zal doorgaan met de volgende regel.<br>
 
