@@ -46,7 +46,7 @@ cv::Mat ColorManager::getMask(const cv::Mat& inputImage, Color color) const
     }
     case Color::ORANGE:
     {
-        cv::inRange(hsv, cv::Scalar(10, 100, 100), cv::Scalar(25, 255, 255), mask);
+        cv::inRange(hsv, cv::Scalar(10, 100, 100), cv::Scalar(23, 255, 255), mask);
         // Logger::getInstance().log("Oranje geselecteerd.\n");
         break;
     }

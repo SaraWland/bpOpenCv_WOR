@@ -9,6 +9,11 @@ find_program(VALGRIND_EXECUTABLE valgrind)
 if(VALGRIND_EXECUTABLE)
     message(STATUS "Valgrind found: ${VALGRIND_EXECUTABLE}")
     set(VALGRIND_OPTIONS --tool=memcheck --leak-check=full --show-leak-kinds=all --track-origins=yes --verbose)
+    add_custom_target(valgrind
+        COMMAND ${VALGRIND_EXECUTABLE} ${VALGRIND_OPTIONS} $<TARGET_FILE:bpOpenCV>
+        DEPENDS bpOpenCV
+        COMMENT "Running Valgrind memory check"
+    )
 else()
     message(WARNING "Valgrind not found. Memory leak detection will be unavailable.")
 endif()

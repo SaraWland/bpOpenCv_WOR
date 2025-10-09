@@ -5,7 +5,6 @@
 #include <chrono>
 #include "Logger.hpp"
 
-// cppcheck-suppress unusedFunction ; Called in detectShape() in shapeHandler.cpp
 cv::Mat Rectangle::findShape(cv::Mat& inputImage, cv::Mat& originalImage, cv::Mat& contourImage, bool isInteractive)
 {
     cv::Mat outputImage = originalImage.clone();
@@ -56,7 +55,7 @@ cv::Mat Rectangle::findShape(cv::Mat& inputImage, cv::Mat& originalImage, cv::Ma
             
             // With finer approximation, half-circles get more vertices because it detects more details
             std::vector<cv::Point> fineApprox;
-            double fineEpsilon = 0.01 * cv::arcLength(contours[i], true);
+            double fineEpsilon = 0.008 * cv::arcLength(contours[i], true);
             cv::approxPolyDP(contours[i], fineApprox, fineEpsilon, true);
             
             if (fineApprox.size() > 8) {

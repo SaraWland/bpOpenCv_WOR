@@ -7,6 +7,7 @@
 OpenCvHandler::OpenCvHandler(char** argv)
     : cap(4), isInteractiveMode(std::string(argv[1]) == "-i"), captureAvailable(true), inputHandler(InputHandler()), shapeHandler(ShapeHandler()), colorManager(ColorManager()), shouldStop(false)
 {
+    // Check if camera opens correctly
     if (!cap.isOpened()) {
         captureAvailable = false;
         Logger::getInstance().log(
@@ -21,6 +22,7 @@ OpenCvHandler::OpenCvHandler(char** argv)
         return;
     }
 
+    // Interactive or batch mode setup
     if (isInteractiveMode) {
         cv::namedWindow("outputWindow");
         cv::moveWindow("outputWindow", 10, 0);
@@ -67,6 +69,7 @@ OpenCvHandler::OpenCvHandler(char** argv)
 
 OpenCvHandler::~OpenCvHandler()
 {
+    // Ensure proper shutdown
     shouldStop = true;
     if (inputThread.joinable()) {
         inputThread.join();
@@ -110,7 +113,6 @@ void OpenCvHandler::setupInputThread() {
                 continue;
             }
 
-            // Process valid input
             Logger::getInstance().log("Processing input...");
 
             cv::Mat colorMask = colorManager.getMask(originalImage, parsedInput.second);

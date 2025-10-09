@@ -51,7 +51,7 @@ public:
     // Getters for private members
     // cppcheck-suppress unusedFunction ; Used in main.cpp for camera availability check
     bool getCaptureAvailable() const { return captureAvailable; } 
-    // cppcheck-suppress unusedFunction ; Used in main.cpp for program exit control
+    // cppcheck-suppress unusedFunction ; Used in main.cpp for program termination check
     bool getShouldStop() const { return shouldStop; }
 private:
     cv::Mat originalImage;

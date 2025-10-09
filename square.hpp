@@ -7,7 +7,7 @@
 class Square : public Shape {
 public:
     Square() = default;
-    ~Square() = default;
+    ~Square() override = default;
 
     /**
      * @brief Finds squares in the input image.

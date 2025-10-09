@@ -7,7 +7,7 @@
 class Circle : public Shape {
 public:
     Circle() = default;
-    ~Circle() = default;
+    ~Circle() override = default;
 
     /**
      * @brief Finds circles in the input image.

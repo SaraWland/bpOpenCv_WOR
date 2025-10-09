@@ -2,7 +2,7 @@
 cirkel roze
 halve cirkel groen
 vierkant geel
-rechthoek oranje
+rechthoek oranje#BOOM
 driehoek roze
 
 # whitespaces

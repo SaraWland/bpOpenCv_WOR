@@ -7,7 +7,7 @@
 class Rectangle : public Shape {
 public:
     Rectangle() = default;
-    ~Rectangle() = default;
+    ~Rectangle() override = default;
 
     /**
      * @brief Finds rectangles in the input image.

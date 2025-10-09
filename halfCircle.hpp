@@ -7,7 +7,7 @@
 class HalfCircle : public Shape {
 public:
     HalfCircle() = default;
-    ~HalfCircle() = default;
+    ~HalfCircle() override = default;
 
     /**
      * @brief Finds half-circles in the input image.

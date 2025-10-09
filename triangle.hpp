@@ -7,7 +7,7 @@
 class Triangle : public Shape {
 public:
     Triangle() = default;
-    ~Triangle() = default;
+    ~Triangle() override = default;
 
     /**
      * @brief Finds triangles in the input image.

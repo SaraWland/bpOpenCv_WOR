@@ -3,6 +3,7 @@
 #include <vector>
 #include <utility>
 #include <fstream>
+#include <algorithm>
 
 #include "parser.hpp"
 #include "Logger.hpp"
@@ -100,11 +101,9 @@ void Parser::parseBatchInput(const std::string& batchFilePath, std::vector<std::
         }
 
         // If # then ignore rest of line
-        for (size_t j = 0; j < line.size(); ++j) {
-            if (line[j] == '#') {
-                line.resize(j);
-                break;
-            }
+        std::string::iterator commentPosition = std::find_if(line.begin(), line.end(), [](char c) { return c == '#'; });
+        if (commentPosition != line.end()) {
+            line.resize(std::distance(line.begin(), commentPosition));
         }
         if (line.empty())
         {
