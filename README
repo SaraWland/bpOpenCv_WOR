@@ -1,0 +1,125 @@
+# Beroepsproduct OpenCV WOR-Robots
+#### Door: Sara Wieland
+
+Dit programma is geschreven voor het OpenCV beroepsproduct van WOR-Robots. Dit programma biedt de mogelijkheid een webcam input uit te lezen en hier verschillende kleuren figuren in te herkennen. <br>
+Er worden twee modus aangeboden:<br>
+    - Interactive modus:<br>
+        Hierin kan de gebruiker zelf de kleur en vorm selecteren die herkend moet worden en visuele feedback krijgen over waar de figuren op de input aanwezig zijn, welke waardes ze hebben en hoelang het duurde om ze te herkennen.<br>
+    - Batch modus:<br>
+        Hierin kan de gebruiker doormiddel van een input bestand meerdere herkenningen achter elkaar uitvoeren. De resultaten worden direct weergegeven in de terminal en niet gevisualiseerd.<br>
+
+---------------------------------------------
+
+### Inhoud
+- [Installatie](#installatie)
+- [Gebruik](#gebruik)
+- [Overige informatie](#overige-informatie)
+
+---------------------------------------------
+
+### Installatie
+
+### 1. Clone de repository van de GitHub pagina op een gewenste locatie:<br>
+```
+git clone https://bitbucket.aimsites.nl/users/sj.wieland_student.han.nl/repos/bpopencv/browse
+```
+<br>In de aangeleverde docker container is OpenCV al geïnstalleerd. Indien je het programma lokaal wilt draaien, installeer dan eerst OpenCV op je systeem.
+
+### 2. Navigeer naar de map waar je de repository hebt gecloned:<br>
+```
+cd bpopencv
+```
+
+### 3. Maak een build map aan genaamd linux:<br>
+```
+mkdir linux
+```
+
+### 4. Navigeer naar de linux map:<br>
+```
+cd linux
+```
+
+### 5. Maak de makefile aan met cmake:<br>
+```
+cmake ..
+```
+
+### 6. Compileer het programma met make:<br>
+```
+make
+```
+
+### 7. Het programma is nu klaar voor gebruik. Je kunt het uitvoeren met de volgende commando's:
+- Voor de interactive modus:
+```
+sudo ./bpOpenCV -i
+```
+
+- Voor de batch modus:
+```
+sudo ./bpOpenCV -b
+of
+sudo ./bpOpenCV -b <pad_naar_input_bestand>
+```
+
+Sudo is nodig om toegang te krijgen tot de webcam.<br>
+Als de camera niet gevonden wordt, voeg de port toe aan het docker. <br>
+Als de camera nog steeds niet gevonden wordt, controleer dan of de juiste camera index bij de cap() is ingesteld in de constructor van `openCvHandler.cpp`.<br>
+Voor ingebouwde webcams is dit meestal 0, voor externe webcams 1 of hoger.<br>
+Als er geen pad meegegeven wordt bij de batch modus, wordt er standaard gezocht naar een bestand genaamd `input.txt` in de parent directory van de linux map.<br>
+
+---------------------------------------------
+
+### Gebruik
+
+#### Interactive modus
+In de interactive modus kan de gebruiker zelf de kleur en vorm selecteren die herkend moet worden. Dit kan door via de terminal input te geven.<br>
+Er wordt duidelijke feedback gegeven aan de gebruiker wanneer de input niet correct is.
+
+De input wordt verwacht in de volgende vorm:<br>
+    ```
+    <vorm> <kleur>
+    ```
+<br><br>
+Waarbij `<vorm>` een van de volgende opties is:<br>
+- cirkel
+- rechthoek
+- vierkant
+- driehoek
+- halve cirkel<br>
+En `<kleur>` een van de volgende opties is:<br>
+- roze
+- groen
+- geel
+- oranje
+
+Na het invoeren zal er een afbeelding gemaakt worden van de webcam input. Hierop worden de gespecificeerde vormen gemarkeerd en hun x,y coordinaten, oppervlakte en de hoeveelheid ticks om ze te herkennen worden weergegeven. Deze afbeelding wordt getoond in een apart venster.<br>
+De gebruiker kan meerdere vormen achter elkaar invoeren. Als de gebruiker klaar is met het invoeren van vormen, kan hij/zij "exit" invoeren om het programma te beëindigen.<br>
+    ```
+    exit
+    ```
+
+#### Batch modus
+
+In de batch modus kan de gebruiker de inhoud van input.txt aanpassen om meerdere herkenningen achter elkaar uit te voeren. De resultaten worden direct weergegeven in de terminal en niet gevisualiseerd.<br>
+In dit bestand kan de gebruiker meerdere regels toevoegen, waarbij elke regel een herkenning specificeert in dezelfde vorm als in de interactive modus.<br>
+
+Hier bij wordt commentaar ondersteund door een '#' te gebruiken. Alles na een '#' op een regel wordt genegeerd.<br>
+<br>Overige whitespaces worden ook genegeerd, dus de gebruiker hoeft zich geen zorgen te maken over extra spaties of lege regels.<br>
+Bij incorrecte input zal er een foutmelding in de terminal verschijnen over welke regel incorrect is, maar het programma zal doorgaan met de volgende regel.<br>
+
+----------------------------------------------
+
+### Overige informatie
+
+Sommige functies worden door cppcheck als "never used" gemarkeerd, terwijl deze wel worden gebruikt. In deze situatie is de warning suppressed met commentaar over waar de functie wel gebruikt wordt.<br><br>
+Er is doxygen documentatie aanwezig in de header files van de code. Doxygen is weg gelaten bij de volgende functies, omdat deze voor zich spreken:<br>
+- Constructors en destructors
+- Getters en setters
+- Operators
+Als één van deze functies niet voor zich spreekt, is er wel doxygen documentatie aanwezig.<br><br>
+Als Valgrind niet gevonden wordt tijdens het make commando kan dit genegeerd worden. Mocht je Valgrind willen gebruiken, zorg er dan voor dat het correct is geïnstalleerd op je systeem:<br>
+```
+sudo apt update && sudo apt install valgrind
+```

@@ -1,0 +1,25 @@
+# standaard input
+cirkel roze
+halve cirkel groen
+vierkant geel
+rechthoek oranje#BOOM
+driehoek roze
+
+# whitespaces
+                    cirkel groen
+halve        cirkel         geel
+vierkant oranje                 
+               rechthoek        roze  
+
+# comments
+cirkel geel #deze input hoort te werken
+cirkel ge#el deze niet
+
+# empty lines
+
+
+
+
+halve cirkel oranje
+
+# dit horen in totaal 11 correcte entries te zijn
